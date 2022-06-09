@@ -42,7 +42,7 @@ class AnalysisTextField extends StatelessWidget{
               style: TextStyle(height: 1.5,
                   fontSize: 20, color: Colors.black),
               maxLines: 11,
-              minLines: 11)),
+              minLines: 1)),
     );
   }
 

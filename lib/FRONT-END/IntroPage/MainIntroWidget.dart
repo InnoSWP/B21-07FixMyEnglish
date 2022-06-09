@@ -56,6 +56,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                 child: FractionallySizedBox(
                   widthFactor: 60 / 100,
                   child: Column(
+                    
                     children: const [
                       AnalysisTextField(),
                       AnalyzeTextButton(),
