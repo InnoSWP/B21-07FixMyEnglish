@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
+import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 
 class UploadButton extends StatelessWidget {
   const UploadButton({Key? key}) : super(key: key);
@@ -11,9 +12,11 @@ class UploadButton extends StatelessWidget {
       child: Center(
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const MainMainPageForAnalysisPDFsWidget();
-              }));},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MainMainPageForAnalysisPDFsWidget();
+                }));
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
