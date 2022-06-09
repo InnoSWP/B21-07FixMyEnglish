@@ -9,7 +9,7 @@ class ReportPartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: Column(
-      children: [MistakenSentenceList(), ExportButton()],
+      children: [Container(height: 65,), MistakenSentenceList(), ExportButton()],
     ));
   }
 }

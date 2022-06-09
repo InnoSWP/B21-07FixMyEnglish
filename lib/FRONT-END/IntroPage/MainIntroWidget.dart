@@ -42,14 +42,13 @@ class _IntroWidgetState extends State<IntroWidget> {
               const Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                  padding: EdgeInsets.only(right: 5),
                   child: Text("iExtract",
                       style: TextStyle(
                           color: Color.fromRGBO(77, 102, 88, 1),
                           fontFamily: 'Eczar',
                           fontSize: 55,
-                          fontWeight: FontWeight.normal,
-                          height: 1)),
+                      )),
                 ),
               ),
               Center(
@@ -61,15 +60,14 @@ class _IntroWidgetState extends State<IntroWidget> {
                       AnalysisTextField(),
                       AnalyzeTextButton(),
                       Padding(
-                        padding: EdgeInsets.only(top: 15.0),
+                        padding: EdgeInsets.only(top: 5.0),
                         child: Text(
-                          "OR",
+                          "or",
                           style: TextStyle(
                               color: Color.fromRGBO(95, 95, 105, 1),
                               fontFamily: 'Eczar',
                               fontSize: 30,
-                              fontWeight: FontWeight.normal,
-                              height: 1),
+                              ),
                         ),
                       ),
                       UploadButton(),

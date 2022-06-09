@@ -8,7 +8,7 @@ class UploadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 5.0),
       child: Center(
         child: FittedBox(
           child: ElevatedButton(
@@ -22,7 +22,7 @@ class UploadButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 35, vertical: 15),
+                    horizontal: 35, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
@@ -32,8 +32,7 @@ class UploadButton extends StatelessWidget {
                               251, 253, 247, 1),
                           fontFamily: 'Eczar',
                           fontSize: 30,
-                          fontWeight: FontWeight.normal,
-                          height: 1)),
+                          )),
                   Padding(
                     padding:
                     const EdgeInsets.fromLTRB(5, 0, 0, 0),

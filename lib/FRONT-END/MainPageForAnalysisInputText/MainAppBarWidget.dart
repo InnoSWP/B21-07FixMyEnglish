@@ -20,10 +20,7 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
             color: Color.fromRGBO(134, 73, 33, 1),
             fontFamily: 'Eczar',
-            fontSize: 45,
-            //64
-            fontWeight: FontWeight.normal,
-            height: 1),
+            fontSize: 45,),
       ),
       actions: <Widget>[
         FittedBox(child: SvgPicture.asset("vectortransition.svg")),

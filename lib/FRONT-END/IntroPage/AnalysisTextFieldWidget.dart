@@ -26,7 +26,7 @@ class AnalysisTextField extends StatelessWidget{
               cursorWidth: 2,
               cursorRadius: Radius.circular(3),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 22, right: 27, left: 27, bottom: 30),
+                contentPadding: EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
                 border: OutlineInputBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(23)),
@@ -40,8 +40,9 @@ class AnalysisTextField extends StatelessWidget{
                 filled: true,
               ),
               style: TextStyle(height: 1.5,
+                  fontFamily: 'Eczar',
                   fontSize: 20, color: Colors.black),
-              maxLines: 11,
+              maxLines: 9,
               minLines: 1)),
     );
   }

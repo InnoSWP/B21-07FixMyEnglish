@@ -26,8 +26,7 @@ class UploadPDFButton extends StatelessWidget {
                           color: Color.fromRGBO(251, 253, 247, 1),
                           fontFamily: 'Eczar',
                           fontSize: 30,
-                          fontWeight: FontWeight.normal,
-                          height: 1)),
+                      )),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                     child: Image.asset(

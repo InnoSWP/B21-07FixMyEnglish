@@ -23,7 +23,7 @@ class AnalyzeTextButton extends StatelessWidget{
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 23, vertical: 15),
+                    horizontal: 20, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
@@ -33,8 +33,7 @@ class AnalyzeTextButton extends StatelessWidget{
                               251, 253, 247, 1),
                           fontFamily: 'Eczar',
                           fontSize: 30,
-                          fontWeight: FontWeight.normal,
-                          height: 1)),
+                          )),
                   Padding(
                     padding:
                     const EdgeInsets.fromLTRB(5, 0, 0, 0),
