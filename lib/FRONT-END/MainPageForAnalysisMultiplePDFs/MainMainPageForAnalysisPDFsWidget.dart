@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'MainAppBarWidget.dart';
 import 'ReportPartWidget.dart';
-import 'TextInputPartWidget.dart';
+import 'PartWithPDFsWidget.dart';
 
-class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
-  const MainMainPageForAnalysisInputTextWidget({Key? key}) : super(key: key);
+class MainMainPageForAnalysisPDFsWidget extends StatefulWidget {
+  const MainMainPageForAnalysisPDFsWidget ({Key? key}) : super(key: key);
 
   @override
-  _MainMainPageForAnalysisInputTextWidget createState() =>
-      _MainMainPageForAnalysisInputTextWidget();
+  _MainMainPageForAnalysisPDFsWidget  createState() =>
+      _MainMainPageForAnalysisPDFsWidget();
 }
 
-class _MainMainPageForAnalysisInputTextWidget
-    extends State<MainMainPageForAnalysisInputTextWidget> {
+class _MainMainPageForAnalysisPDFsWidget
+    extends State<MainMainPageForAnalysisPDFsWidget > {
   @override
   Widget build(BuildContext context) {
-    // Figma Flutter Generator IntroPage - FRAME
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -24,7 +23,7 @@ class _MainMainPageForAnalysisInputTextWidget
                 child: Row(
               children: [
                 Expanded(child: ReportPartWidget()),
-                TextInputPartWidget(),
+                PartWithPDFsWidget(),
               ],
             )),
           ),

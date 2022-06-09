@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
-import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 
-class UploadButton extends StatelessWidget {
-  const UploadButton({Key? key}) : super(key: key);
+class ExportButton extends StatelessWidget {
+  const ExportButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 30.0, bottom: 10),
       child: Center(
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MainMainPageForAnalysisPDFsWidget();
-                }));
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
@@ -26,7 +20,7 @@ class UploadButton extends StatelessWidget {
               ),
               child: Row(
                 children: <Widget>[
-                  const Text("Upload",
+                  const Text("Export",
                       style: TextStyle(
                           color: Color.fromRGBO(
                               251, 253, 247, 1),
