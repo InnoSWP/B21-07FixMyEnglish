@@ -18,9 +18,11 @@ class UploadButton extends StatelessWidget {
                 if (files == null){
                   print("problem");
                 }
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MainMainPageForAnalysisPDFsWidget();
-                }));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context){
+                      return const MainMainPageForAnalysisPDFsWidget();
+                     })
+                );
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
