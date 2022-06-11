@@ -23,6 +23,7 @@ class PdfAPI{
         Uint8List? itemBytes = item.bytes;
         final PdfDocument document = PdfDocument(inputBytes: itemBytes);
         String text = PdfTextExtractor(document).extractText(); // !
+        text = text.replaceAll('\n', "");
         document.dispose();
 
         var file = PDFfile(name, text);
