@@ -3,6 +3,9 @@ import 'package:web1_app/BACK-END/AnalyzePDF/PDFfileClass.dart';
 import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
+import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+
 class UploadButton extends StatelessWidget {
   const UploadButton({Key? key}) : super(key: key);
 
@@ -18,6 +21,27 @@ class UploadButton extends StatelessWidget {
                 if (files == null){
                   print("problem");
                 }
+
+                // TODO: сделай по красоте, Marat
+                //Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
+                // {"?" : [[], [], []], [[], [], []], [[], [], []]}
+                Map<String, List<List<SentencePart>>> mistakes = {
+                  "test.pdf":
+                  [
+                    [
+                      SentencePart("This solution is", null),
+                      SentencePart("n't", "Описание ошибки"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("There are", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                    ]
+                };
+                Analyzer.reportData.addAll(mistakes);
+
+
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context){
                       return const MainMainPageForAnalysisPDFsWidget();

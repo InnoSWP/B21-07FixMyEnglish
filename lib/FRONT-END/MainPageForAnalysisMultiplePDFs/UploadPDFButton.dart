@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
+import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+import 'package:web1_app/BACK-END/AnalyzePDF/PDFfileClass.dart';
 
 class UploadPDFButton extends StatelessWidget {
   const UploadPDFButton({Key? key}) : super(key: key);
@@ -11,7 +15,15 @@ class UploadPDFButton extends StatelessWidget {
         padding: const EdgeInsets.only(top: 15, bottom: 10),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async{
+                List<PDFfile>? files = await PdfAPI.selectFiles();
+                if (files == null){
+                  print("problem");
+                }
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
+                Analyzer.reportData.addAll(mistakes);
+
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF4D6658),
                 shape: RoundedRectangleBorder(
