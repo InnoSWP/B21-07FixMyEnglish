@@ -22,9 +22,9 @@ class UploadButton extends StatelessWidget {
                   print("problem");
                 }
 
-                //Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
                 // {"?" : [[], [], []], [[], [], []], [[], [], []]}
-                Map<String, List<List<SentencePart>>> mistakes = {
+                /*Map<String, List<List<SentencePart>>> mistakes = {
                   "test1.pdf": [
                     [
                       SentencePart("This solution is", null),
@@ -47,7 +47,7 @@ class UploadButton extends StatelessWidget {
                       SentencePart("three ways to solve this problem", null)
                     ]
                   ]
-                };
+                };*/
                 Analyzer.reportData.addAll(mistakes);
 
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
