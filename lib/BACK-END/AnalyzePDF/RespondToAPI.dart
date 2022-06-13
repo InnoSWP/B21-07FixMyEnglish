@@ -12,6 +12,10 @@ import '../AnalyzePDF/PDFfileClass.dart';
 Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
   List<Mistake> mistakeList = [];
 
+  print("Connecting to API...");
+  print("Checking text:");
+  print(inputFile.text);
+
   final response =
       await http.post(Uri.parse('https://cors-anywhere.herokuapp.com/https://aqueous-anchorage-93443.herokuapp.com/FixMyEnglish'),
           headers: {
@@ -23,7 +27,7 @@ Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
             "text": inputFile.text
           }));
 
-  // print(response.body);
+  print(response.body);
 
   if (response.statusCode == 200) {
     print("Successful connection");
