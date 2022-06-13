@@ -23,7 +23,6 @@ class UploadButton extends StatelessWidget {
                 }
 
                 Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
-                // {"?" : [[], [], []], [[], [], []], [[], [], []]}
                 /*Map<String, List<List<SentencePart>>> mistakes = {
                   "test1.pdf": [
                     [

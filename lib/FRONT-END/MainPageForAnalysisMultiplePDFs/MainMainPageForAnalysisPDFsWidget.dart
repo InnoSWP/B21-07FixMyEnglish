@@ -112,7 +112,9 @@ class _MainMainPageForAnalysisPDFsWidget
                     child: Material(
                         color: Colors.white.withOpacity(0.0),
                         child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+
+                            },
                             child: Icon(
                               Icons.warning_outlined,
                               color: Color.fromRGBO(134, 73, 33, 1),
@@ -284,7 +286,11 @@ class _MainMainPageForAnalysisPDFsWidget
                         child: Material(
                             color: Colors.white.withOpacity(0.0),
                             child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  setState((){
+                                    Analyzer.reportData.remove(PDFName);
+                                  });
+                                },
                                 child: Icon(
                                   Icons.highlight_remove,
                                   color: Colors.white,
