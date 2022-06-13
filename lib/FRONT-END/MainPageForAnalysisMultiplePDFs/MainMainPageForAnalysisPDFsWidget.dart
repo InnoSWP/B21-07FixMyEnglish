@@ -47,11 +47,11 @@ class _MainMainPageForAnalysisPDFsWidget
         appBar: MainAppBarWidget(context),
         body: Container(
             child: Row(
-              children: [
-                ReportPartWidget(),
-                PartWithPDFsWidget(),
-              ],
-            )),
+          children: [
+            ReportPartWidget(),
+            PartWithPDFsWidget(),
+          ],
+        )),
       ),
     );
   }
@@ -59,23 +59,23 @@ class _MainMainPageForAnalysisPDFsWidget
   Widget ReportPartWidget() {
     return Expanded(
         child: Column(
-          children: [
-            Container(
-              height: 65,
-            ),
-            MistakenSentenceList(),
-            ExportButton()
-          ],
-        ));
+      children: [
+        Container(
+          height: 65,
+        ),
+        MistakenSentenceList(),
+        ExportButton()
+      ],
+    ));
   }
 
   Widget MistakenSentenceList() {
     return Expanded(
-      child: ListView.builder(
+      child: mistakenSentenceList!= null ? ListView.builder(
           itemCount: mistakenSentenceList?.length,
           itemBuilder: (BuildContext context, int index) {
             return MistakenSentenceElement(mistakenSentenceList![index]);
-          }),
+          }) : Text("Please, click on upload or any button with name of file on right panel"),
     );
   }
 
@@ -112,9 +112,7 @@ class _MainMainPageForAnalysisPDFsWidget
                     child: Material(
                         color: Colors.white.withOpacity(0.0),
                         child: InkWell(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             child: Icon(
                               Icons.warning_outlined,
                               color: Color.fromRGBO(134, 73, 33, 1),
@@ -156,16 +154,16 @@ class _MainMainPageForAnalysisPDFsWidget
           text: i.text,
           style: i.description == null
               ? TextStyle(
-            height: 1.5,
-            fontSize: 18,
-            fontFamily: 'Eczar',
-          )
+                  height: 1.5,
+                  fontSize: 18,
+                  fontFamily: 'Eczar',
+                )
               : TextStyle(
-            backgroundColor: Colors.redAccent,
-            height: 1.5,
-            fontSize: 18,
-            fontFamily: 'Eczar',
-          )));
+                  backgroundColor: Colors.redAccent,
+                  height: 1.5,
+                  fontSize: 18,
+                  fontFamily: 'Eczar',
+                )));
     }
     return toRet;
   }
@@ -183,7 +181,7 @@ class _MainMainPageForAnalysisPDFsWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
               ),
               child: Row(
                 children: <Widget>[
@@ -222,7 +220,7 @@ class _MainMainPageForAnalysisPDFsWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
               ),
               child: Row(
                 children: <Widget>[
@@ -251,15 +249,13 @@ class _MainMainPageForAnalysisPDFsWidget
     return Expanded(
         child: ListView.builder(
             itemCount: Analyzer.reportData.length,
-            itemBuilder: (BuildContext context, int index) =>
-                Visibility(
-                    visible: Analyzer.reportData.keys.elementAt(index) !=
-                        "textForAnalysis",
-                    child: PDFElementWidget(
-                        Analyzer.reportData.keys.elementAt(index),
-                        index == indexOfSelectedPDF, index)
-                )
-        ));
+            itemBuilder: (BuildContext context, int index) => Visibility(
+                visible: Analyzer.reportData.keys.elementAt(index) !=
+                    "textForAnalysis",
+                child: PDFElementWidget(
+                    Analyzer.reportData.keys.elementAt(index),
+                    index == indexOfSelectedPDF,
+                    index))));
   }
 
   Widget PDFElementWidget(String PDFName, bool selected, int index) {
@@ -276,7 +272,7 @@ class _MainMainPageForAnalysisPDFsWidget
             },
             style: ElevatedButton.styleFrom(
               primary:
-              !selected ? const Color(0xFF62806F) : const Color(0xFF4D6658),
+                  !selected ? const Color(0xFF62806F) : const Color(0xFF4D6658),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               padding: const EdgeInsets.only(
@@ -293,6 +289,9 @@ class _MainMainPageForAnalysisPDFsWidget
                                 onTap: () {
                                   setState(() {
                                     Analyzer.reportData.remove(PDFName);
+                                    if(selected){
+                                      mistakenSentenceList = null;
+                                    }
                                   });
                                 },
                                 child: Icon(
@@ -336,15 +335,17 @@ class _MainMainPageForAnalysisPDFsWidget
                   print("problem");
                 }
                 Map<String, List<List<SentencePart>>> mistakes =
-                await Analyzer.getMistakes(files!);
-                Analyzer.reportData.addAll(mistakes);
+                    await Analyzer.getMistakes(files!);
+                setState(() {
+                  Analyzer.reportData.addAll(mistakes);
+                });
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF4D6658),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
               ),
               child: Row(
                 children: <Widget>[

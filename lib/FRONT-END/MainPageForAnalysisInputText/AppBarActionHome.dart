@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 
 class AppBarActionHome extends StatelessWidget {
   BuildContext contextOfMainPage;
@@ -18,6 +19,7 @@ class AppBarActionHome extends StatelessWidget {
           color: const Color.fromRGBO(242, 238, 225, 1),
           shape: const CircleBorder(),
           onPressed: () {
+            Analyzer.reportData.clear();
             Navigator.pop(contextOfMainPage);
           },
           child: const Icon(
