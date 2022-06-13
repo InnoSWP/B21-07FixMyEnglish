@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../MainPageForAnalysisInputText/MainMainPageForAnalysisInputTextWidget.dart';
+import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 
 class AnalyzeTextButton extends StatelessWidget{
   const AnalyzeTextButton({Key? key}) : super(key: key);
@@ -14,6 +16,31 @@ class AnalyzeTextButton extends StatelessWidget{
         child: FittedBox(
           child: ElevatedButton(
               onPressed: (){
+                Map<String, List<List<SentencePart>>> mistakes = {
+                  "test1.pdf": [
+                    [
+                      SentencePart("This solution is", null),
+                      SentencePart("n't ", "Описание ошибки"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ],
+                  "test2.pdf": [
+                    [
+                      SentencePart("Second: This solution is", null),
+                      SentencePart("n't ", "Описание ошибки"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("Second: There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ]
+                };
+                Analyzer.reportData.addAll(mistakes);
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const MainMainPageForAnalysisInputTextWidget();
                 }));

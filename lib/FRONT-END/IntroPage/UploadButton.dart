@@ -35,6 +35,17 @@ class UploadButton extends StatelessWidget {
                       SentencePart("three ways to solve this problem", null)
                     ]
                   ],
+                  "textForAnalysis":[
+                    [
+                      SentencePart("Analysis: This solution is", null),
+                      SentencePart("n't ", "Описание ошибки"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("Analysis: There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ],
                   "test2.pdf": [
                     [
                       SentencePart("Second: This solution is", null),
@@ -45,7 +56,7 @@ class UploadButton extends StatelessWidget {
                       SentencePart("Second: There are ", "bad"),
                       SentencePart("three ways to solve this problem", null)
                     ]
-                  ]
+                  ],
                 };*/
                 Analyzer.reportData.addAll(mistakes);
 
