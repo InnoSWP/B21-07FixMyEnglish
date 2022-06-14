@@ -99,9 +99,16 @@ class _IntroWidgetState extends State<IntroWidget> {
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if(textFromTextField!=''){
+                  List<PDFfile>? files = [];
+                  files.add(PDFfile('textForAnalysis', textFromTextField));
+
+                  Map<String, List<List<SentencePart>>> mistakes =
+                      await Analyzer.getMistakes(files);
+                  Analyzer.reportData.addAll(mistakes);
+
                   // adding report of "textFromTextField" to reportData with following name: "textForAnalysis"
                 }
                 Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {

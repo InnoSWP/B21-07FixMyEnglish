@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../BACK-END/AnalyzePDF/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 
 class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
   const MainMainPageForAnalysisInputTextWidget({Key? key}) : super(key: key);
@@ -239,10 +242,15 @@ class _MainMainPageForAnalysisInputTextWidget
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: (){
+              onPressed: () async{
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if(textFromTextField!=''){
-                  // adding report of textFromTextField to reportData with following name: "textForAnalysis"
+                  List<PDFfile>? files = [];
+                  files.add(PDFfile('textForAnalysis', textFromTextField));
+
+                  Map<String, List<List<SentencePart>>> mistakes =
+                    await Analyzer.getMistakes(files);
+                  Analyzer.reportData.addAll(mistakes);
                   setState((){
                     mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
                   });
