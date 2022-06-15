@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'PDFfileClass.dart';
+import '../PDFfileClass.dart';
 
 class PdfAPI{
   static Future<List<PDFfile>?> selectFiles() async {

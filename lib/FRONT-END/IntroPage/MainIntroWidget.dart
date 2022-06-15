@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'IntroAppBarWidget.dart';
 import '../MainPageForAnalysisInputText/MainMainPageForAnalysisInputTextWidget.dart';
-import 'package:web1_app/BACK-END/AnalyzePDF/PDFfileClass.dart';
+import 'package:web1_app/BACK-END/PDFfileClass.dart';
 import '../MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
@@ -99,9 +99,16 @@ class _IntroWidgetState extends State<IntroWidget> {
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if(textFromTextField!=''){
+                  List<PDFfile>? files = [];
+                  files.add(PDFfile('textForAnalysis', textFromTextField));
+
+                  Map<String, List<List<SentencePart>>> mistakes =
+                      await Analyzer.getMistakes(files);
+                  Analyzer.reportData.addAll(mistakes);
+
                   // adding report of "textFromTextField" to reportData with following name: "textForAnalysis"
                 }
                 Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {
@@ -192,41 +199,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                   print("problem");
                 }
                 Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
-                /*Map<String, List<List<SentencePart>>> mistakes = {
-                  "test1.pdf": [
-                    [
-                      SentencePart("This solution is", null),
-                      SentencePart("n't ", "Описание ошибки"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                  "textForAnalysis":[
-                    [
-                      SentencePart("Analysis: This solution is", null),
-                      SentencePart("n't ", "Описание ошибки"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("Analysis: There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                  "test2.pdf": [
-                    [
-                      SentencePart("Second: This solution is", null),
-                      SentencePart("n't ", "Описание ошибки"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("Second: There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                };*/
                 Analyzer.reportData.addAll(mistakes);
 
                 Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {

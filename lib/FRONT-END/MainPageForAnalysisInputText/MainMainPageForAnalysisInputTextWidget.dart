@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../BACK-END/Exporting/ExportFile.dart';
+import '../../BACK-END/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 
 class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
   const MainMainPageForAnalysisInputTextWidget({Key? key}) : super(key: key);
@@ -161,7 +165,12 @@ class _MainMainPageForAnalysisInputTextWidget
         padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print("Exporting file..");
+                String selected_file_name = "textForAnalysis";
+                print("Selected file name = " + selected_file_name);
+                exportFile(selected_file_name);
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
@@ -239,10 +248,15 @@ class _MainMainPageForAnalysisInputTextWidget
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: (){
+              onPressed: () async{
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if(textFromTextField!=''){
-                  // adding report of textFromTextField to reportData with following name: "textForAnalysis"
+                  List<PDFfile>? files = [];
+                  files.add(PDFfile('textForAnalysis', textFromTextField));
+
+                  Map<String, List<List<SentencePart>>> mistakes =
+                    await Analyzer.getMistakes(files);
+                  Analyzer.reportData.addAll(mistakes);
                   setState((){
                     mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
                   });
