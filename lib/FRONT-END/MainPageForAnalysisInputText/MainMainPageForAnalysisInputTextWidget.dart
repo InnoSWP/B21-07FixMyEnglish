@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../BACK-END/AnalyzePDF/PDFfileClass.dart';
+import '../../BACK-END/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
