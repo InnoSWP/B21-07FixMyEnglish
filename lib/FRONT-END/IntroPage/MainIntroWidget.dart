@@ -108,12 +108,11 @@ class _IntroWidgetState extends State<IntroWidget> {
                   Map<String, List<List<SentencePart>>> mistakes =
                       await Analyzer.getMistakes(files);
                   Analyzer.reportData.addAll(mistakes);
+                  Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {
+                    return const MainMainPageForAnalysisInputTextWidget();
+                  }));
 
-                  // adding report of "textFromTextField" to reportData with following name: "textForAnalysis"
                 }
-                Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {
-                  return const MainMainPageForAnalysisInputTextWidget();
-                }));
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF4D6658),

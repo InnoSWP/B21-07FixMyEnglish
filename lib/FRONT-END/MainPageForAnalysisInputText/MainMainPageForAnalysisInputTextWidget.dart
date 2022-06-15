@@ -28,6 +28,10 @@ class _MainMainPageForAnalysisInputTextWidget
     controllerOfTextForAnalysis.dispose();
     super.dispose();
   }
+  void initState() {
+    super.initState();
+    mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+  }
 
   @override
   Widget build(BuildContext context) {
