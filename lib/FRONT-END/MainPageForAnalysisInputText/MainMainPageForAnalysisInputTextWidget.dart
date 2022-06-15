@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../BACK-END/Exporting/ExportFile.dart';
 import '../../BACK-END/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
@@ -164,7 +165,12 @@ class _MainMainPageForAnalysisInputTextWidget
         padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print("Exporting file..");
+                String selected_file_name = "textForAnalysis";
+                print("Selected file name = " + selected_file_name);
+                exportFile(selected_file_name);
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(

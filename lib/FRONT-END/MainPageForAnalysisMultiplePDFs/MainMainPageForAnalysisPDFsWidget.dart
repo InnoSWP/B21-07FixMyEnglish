@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import 'package:web1_app/BACK-END/Exporting/ExportAllFiles.dart';
+import 'package:web1_app/BACK-END/Exporting/ExportFile.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
-import 'package:web1_app/BACK-END/AnalyzePDF/PDFfileClass.dart';
+import '../../BACK-END/Exporting/ExportFile.dart';
+import 'package:web1_app/BACK-END/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import 'package:flutter/services.dart';
 
@@ -175,7 +178,12 @@ class _MainMainPageForAnalysisPDFsWidget
         padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print("Exporting file..");
+                String selected_file_name = Analyzer.reportData.keys.elementAt(indexOfSelectedPDF);
+                print("Selected file name = " + selected_file_name);
+                exportFile(selected_file_name);
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
@@ -214,7 +222,9 @@ class _MainMainPageForAnalysisPDFsWidget
         padding: const EdgeInsets.only(top: 25, bottom: 10),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                exportAllFileS();
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF4D6658),
                 shape: RoundedRectangleBorder(
