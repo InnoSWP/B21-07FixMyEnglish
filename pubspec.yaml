@@ -79,6 +79,16 @@ flutter:
     - family: Eczar
       fonts:
         - asset: fonts/static/Eczar-Regular.ttf
+          weight: 100
+        - asset: fonts/static/Eczar-Medium.ttf
+          weight: 300
+        - asset: fonts/static/Eczar-SemiBold.ttf
+          weight: 400
+        - asset: fonts/static/Eczar-Bold.ttf
+          weight: 700
+        - asset: fonts/static/Eczar-ExtraBold.ttf
+          weight: 800
+
 
 
   # For details regarding fonts from package dependencies,

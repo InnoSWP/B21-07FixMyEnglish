@@ -290,6 +290,7 @@ class _MainMainPageForAnalysisPDFsWidget
                                   setState(() {
                                     Analyzer.reportData.remove(PDFName);
                                     if(selected){
+                                      indexOfSelectedPDF = -1;
                                       mistakenSentenceList = null;
                                     }
                                   });
