@@ -28,6 +28,7 @@ class _IntroWidgetState extends State<IntroWidget> {
     controllerOfTextForAnalysis.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator IntroPage - FRAME
@@ -99,19 +100,19 @@ class _IntroWidgetState extends State<IntroWidget> {
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () async{
+              onPressed: () async {
                 String textFromTextField = controllerOfTextForAnalysis.text;
-                if(textFromTextField!=''){
+                if (textFromTextField != '') {
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
 
                   Map<String, List<List<SentencePart>>> mistakes =
                       await Analyzer.getMistakes(files);
                   Analyzer.reportData.addAll(mistakes);
-                  Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {
+                  Navigator.push(navigatorKey.currentContext!,
+                      MaterialPageRoute(builder: (context) {
                     return const MainMainPageForAnalysisInputTextWidget();
                   }));
-
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -143,8 +144,8 @@ class _IntroWidgetState extends State<IntroWidget> {
       ),
     );
   }
-  Widget AnalysisTextField() {
 
+  Widget AnalysisTextField() {
     return Center(
       child: Container(
           decoration: const BoxDecoration(
@@ -156,20 +157,19 @@ class _IntroWidgetState extends State<IntroWidget> {
                 spreadRadius: 1,
               ),
             ],
-            borderRadius:
-            BorderRadius.all(Radius.circular(23)),
+            borderRadius: BorderRadius.all(Radius.circular(23)),
           ),
           margin: const EdgeInsets.only(top: 55),
           child: TextField(
-            controller: controllerOfTextForAnalysis,
+              controller: controllerOfTextForAnalysis,
               cursorColor: Color.fromRGBO(134, 73, 33, 1),
               cursorWidth: 2,
               cursorRadius: Radius.circular(3),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
+                contentPadding:
+                    EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
                 border: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(23)),
+                  borderRadius: BorderRadius.all(Radius.circular(23)),
                   borderSide: BorderSide(
                     width: 0,
                     style: BorderStyle.none,
@@ -179,13 +179,16 @@ class _IntroWidgetState extends State<IntroWidget> {
                 fillColor: Color(0xFFF2EEE1),
                 filled: true,
               ),
-              style: TextStyle(height: 1.5,
+              style: TextStyle(
+                  height: 1.5,
                   fontFamily: 'Eczar',
-                  fontSize: 20, color: Colors.black),
+                  fontSize: 20,
+                  color: Colors.black),
               maxLines: 9,
               minLines: 1)),
     );
   }
+
   Widget UploadButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0),
@@ -198,9 +201,49 @@ class _IntroWidgetState extends State<IntroWidget> {
                   print("problem");
                 }
                 Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
+                /*Map<String, List<List<SentencePart>>> mistakes = {
+                  "test1.pdf": [
+                    [
+                      SentencePart("This solution is", null),
+                      SentencePart("n't ", "Описание ошибки"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ],
+                  "textForAnalysis": [
+                    [
+                      SentencePart("Analysis: This solution is", null),
+                      SentencePart("n't ",
+                          "Verfasj ljaskldjfkljs klsjdkflj kljsdfkl jdslkjfkj kjkj jk sjlk l ajl d fa saf"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("Analysis: There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ],
+                  "test2.pdf": [
+                    [
+                      SentencePart(
+                          "Second: This solution isgdf;lgkl;dskfgdslfkglkdsl; kdlfk kdsf;ll kk ;ldfklgk ;dlfkgl sdkf;l k;lckglkdfkg lkdlfk s;ldfkg;lkds;lf ;kgfbkk;k ;ksfgkdksg kdfg k;ldsk'slfdk odkokgdfoko l kokk okfkk k o ldfgo ldsfkg lkdsfogk kds kok okdl kgfok okgkodfk",
+                          null),
+                      SentencePart("n't ",
+                          "Verfasj ljaskldjfkljs klsfsadk; lls l;fklaskflk kas;lk f;lasdkf l;ks;ldkf kasdfk slkfl sdka;lfksadl ;kf;lsk ;lasdk;lfkas;lkf ;lasdkflsdkd; kk;jk;sjgfkjdfjgd hjljlhjj hjh h hjhjlfdhghdfjgk;jkjgfjkl ljdfklgjjk jkldfjgkdjfgj jdfklgkl jjflgjkldfjjkg kljjgklfjdglja;sjdkfjikljs kldfkj klsjdjfkj sjfkj sj kl jdskf;lj lkjsdjfsjjfjksdfkjl kjl kjlsdfkjl kjl kjlsdkjldsfjk klsadl ksdkl lsksdk jdkflj kljsdfkl jdslkjfkj kjkj jk sjlk l ajl d fa saf"),
+                      SentencePart("the most effective one.", null)
+                    ],
+                    [
+                      SentencePart("Second: There are ", "bad"),
+                      SentencePart("three ways to solve this problem", null)
+                    ]
+                  ],
+                };*/
                 Analyzer.reportData.addAll(mistakes);
 
-                Navigator.push(navigatorKey.currentContext!, MaterialPageRoute(builder: (context) {
+                Navigator.push(navigatorKey.currentContext!,
+                    MaterialPageRoute(builder: (context) {
                   return const MainMainPageForAnalysisPDFsWidget();
                 }));
               },
@@ -209,7 +252,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
