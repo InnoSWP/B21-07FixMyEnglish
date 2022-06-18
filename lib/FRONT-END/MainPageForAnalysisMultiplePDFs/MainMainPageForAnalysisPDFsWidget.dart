@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import 'package:web1_app/BACK-END/Exporting/ExportAllFiles.dart';
+import 'package:web1_app/BACK-END/Exporting/ExportFile.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
-import 'package:web1_app/BACK-END/AnalyzePDF/PDFfileClass.dart';
+import '../../BACK-END/Exporting/ExportFile.dart';
+import 'package:web1_app/BACK-END/PDFfileClass.dart';
+import '../MainPageForAnalysisInputText/TooltipSpan.dart';
 import 'MainAppBarWidget.dart';
 import 'package:flutter/services.dart';
 
@@ -71,11 +75,14 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget MistakenSentenceList() {
     return Expanded(
-      child: mistakenSentenceList!= null ? ListView.builder(
-          itemCount: mistakenSentenceList?.length,
-          itemBuilder: (BuildContext context, int index) {
-            return MistakenSentenceElement(mistakenSentenceList![index]);
-          }) : Text("Please, click on upload or any button with name of file on right panel"),
+      child: mistakenSentenceList != null
+          ? ListView.builder(
+              itemCount: mistakenSentenceList?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return MistakenSentenceElement(mistakenSentenceList![index]);
+              })
+          : Text(
+              "Please, click on upload or any button with name of file on right panel"),
     );
   }
 
@@ -120,17 +127,30 @@ class _MainMainPageForAnalysisPDFsWidget
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
-                    child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                            onTap: () {
-                              Clipboard.setData(
-                                  ClipboardData(text: prepareForCopying(text)));
-                            },
-                            child: Icon(
-                              Icons.copy,
-                              color: Color.fromRGBO(134, 73, 33, 1),
-                            ))),
+                    child: Tooltip(
+                      message: "Copy",
+                      padding: EdgeInsets.all(6),
+                      margin: EdgeInsets.all(10),
+                      showDuration: Duration(seconds: 0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF49454F),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      textStyle: TextStyle(color: Colors.white),
+                      preferBelow: true,
+                      child: Material(
+                          color: Colors.white.withOpacity(0.0),
+                          child: InkWell(
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(
+                                    text: prepareForCopying(text)));
+                              },
+                              child: Icon(
+                                Icons.copy,
+                                color: Color.fromRGBO(134, 73, 33, 1),
+                              ))),
+                    ),
                   )
                 ]),
               ),
@@ -147,23 +167,29 @@ class _MainMainPageForAnalysisPDFsWidget
     return toRet;
   }
 
-  List<TextSpan> convertTextToTextSpans(List<SentencePart> txt) {
-    List<TextSpan> toRet = [];
+  List<TooltipSpan> convertTextToTextSpans(List<SentencePart> txt) {
+    List<TooltipSpan> toRet = [];
     for (var i in txt) {
-      toRet.add(TextSpan(
-          text: i.text,
-          style: i.description == null
-              ? TextStyle(
-                  height: 1.5,
-                  fontSize: 18,
-                  fontFamily: 'Eczar',
-                )
-              : TextStyle(
-                  backgroundColor: Colors.redAccent,
-                  height: 1.5,
-                  fontSize: 18,
-                  fontFamily: 'Eczar',
-                )));
+      i.description == null
+          ? toRet.add(TooltipSpan(
+              message: "",
+              inlineSpan: TextSpan(
+                  text: i.text,
+                  style: TextStyle(
+                    height: 1.5,
+                    fontSize: 18,
+                    fontFamily: 'Eczar',
+                  ))))
+          : toRet.add(TooltipSpan(
+              message: i.description!,
+              inlineSpan: TextSpan(
+                  text: i.text,
+                  style: TextStyle(
+                    backgroundColor: Colors.redAccent,
+                    height: 1.5,
+                    fontSize: 18,
+                    fontFamily: 'Eczar',
+                  ))));
     }
     return toRet;
   }
@@ -175,7 +201,13 @@ class _MainMainPageForAnalysisPDFsWidget
         padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print("Exporting file..");
+                String selected_file_name =
+                    Analyzer.reportData.keys.elementAt(indexOfSelectedPDF);
+                print("Selected file name = " + selected_file_name);
+                exportFile(selected_file_name);
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
@@ -214,7 +246,9 @@ class _MainMainPageForAnalysisPDFsWidget
         padding: const EdgeInsets.only(top: 25, bottom: 10),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                exportAllFileS();
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xFF4D6658),
                 shape: RoundedRectangleBorder(
@@ -289,7 +323,8 @@ class _MainMainPageForAnalysisPDFsWidget
                                 onTap: () {
                                   setState(() {
                                     Analyzer.reportData.remove(PDFName);
-                                    if(selected){
+                                    if (selected) {
+                                      indexOfSelectedPDF = -1;
                                       mistakenSentenceList = null;
                                     }
                                   });

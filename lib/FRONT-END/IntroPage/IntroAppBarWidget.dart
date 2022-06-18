@@ -22,6 +22,7 @@ class IntroAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               color: Color.fromRGBO(134, 73, 33, 1),
               fontFamily: 'Eczar',
               fontSize: 45,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),

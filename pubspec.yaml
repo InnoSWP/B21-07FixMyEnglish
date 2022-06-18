@@ -37,6 +37,8 @@ dependencies:
   file_picker: ^4.6.1
   pdfx: ^2.0.1+2
   syncfusion_flutter_pdf: ^20.1.59-beta
+  csv: ^5.0.1
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +81,16 @@ flutter:
     - family: Eczar
       fonts:
         - asset: fonts/static/Eczar-Regular.ttf
+          weight: 100
+        - asset: fonts/static/Eczar-Medium.ttf
+          weight: 300
+        - asset: fonts/static/Eczar-SemiBold.ttf
+          weight: 400
+        - asset: fonts/static/Eczar-Bold.ttf
+          weight: 700
+        - asset: fonts/static/Eczar-ExtraBold.ttf
+          weight: 800
+
 
 
   # For details regarding fonts from package dependencies,

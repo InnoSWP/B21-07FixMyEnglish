@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../BACK-END/Exporting/ExportFile.dart';
+import '../../BACK-END/PDFfileClass.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
+import 'TooltipSpan.dart';
 
 class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
   const MainMainPageForAnalysisInputTextWidget({Key? key}) : super(key: key);
@@ -14,7 +19,6 @@ class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
 
 class _MainMainPageForAnalysisInputTextWidget
     extends State<MainMainPageForAnalysisInputTextWidget> {
-
   List<List<SentencePart>>? mistakenSentenceList;
   final controllerOfTextForAnalysis = TextEditingController();
 
@@ -23,6 +27,11 @@ class _MainMainPageForAnalysisInputTextWidget
     // Clean up the controller when the widget is disposed.
     controllerOfTextForAnalysis.dispose();
     super.dispose();
+  }
+
+  void initState() {
+    super.initState();
+    mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
   }
 
   @override
@@ -57,11 +66,13 @@ class _MainMainPageForAnalysisInputTextWidget
 
   Widget MistakenSentenceList() {
     return Expanded(
-      child: mistakenSentenceList!=null ? ListView.builder(
-          itemCount: mistakenSentenceList?.length,
-          itemBuilder: (BuildContext context, int index) {
-            return MistakenSentenceElement(mistakenSentenceList![index]);
-          }) : Text("Please, input text and click on button \"Analyze text\""),
+      child: mistakenSentenceList != null
+          ? ListView.builder(
+              itemCount: mistakenSentenceList?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return MistakenSentenceElement(mistakenSentenceList![index]);
+              })
+          : Text("Please, input text and click on button \"Analyze text\""),
     );
   }
 
@@ -106,17 +117,30 @@ class _MainMainPageForAnalysisInputTextWidget
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
-                    child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                            onTap: () {
-                              Clipboard.setData(
-                                  ClipboardData(text: prepareForCopying(text)));
-                            },
-                            child: Icon(
-                              Icons.copy,
-                              color: Color.fromRGBO(134, 73, 33, 1),
-                            ))),
+                    child: Tooltip(
+                      message: "Copy",
+                      padding: EdgeInsets.all(6),
+                      margin: EdgeInsets.all(10),
+                      showDuration: Duration(seconds: 0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF49454F),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      textStyle: TextStyle(color: Colors.white),
+                      preferBelow: true,
+                      child: Material(
+                          color: Colors.white.withOpacity(0.0),
+                          child: InkWell(
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(
+                                    text: prepareForCopying(text)));
+                              },
+                              child: Icon(
+                                Icons.copy,
+                                color: Color.fromRGBO(134, 73, 33, 1),
+                              ))),
+                    ),
                   )
                 ]),
               ),
@@ -133,23 +157,29 @@ class _MainMainPageForAnalysisInputTextWidget
     return toRet;
   }
 
-  List<TextSpan> convertTextToTextSpans(List<SentencePart> txt) {
-    List<TextSpan> toRet = [];
+  List<TooltipSpan> convertTextToTextSpans(List<SentencePart> txt) {
+    List<TooltipSpan> toRet = [];
     for (var i in txt) {
-      toRet.add(TextSpan(
-          text: i.text,
-          style: i.description == null
-              ? TextStyle(
-                  height: 1.5,
-                  fontSize: 18,
-                  fontFamily: 'Eczar',
-                )
-              : TextStyle(
-                  backgroundColor: Colors.redAccent,
-                  height: 1.5,
-                  fontSize: 18,
-                  fontFamily: 'Eczar',
-                )));
+      i.description == null
+          ? toRet.add(TooltipSpan(
+              message: "",
+              inlineSpan: TextSpan(
+                  text: i.text,
+                  style: TextStyle(
+                    height: 1.5,
+                    fontSize: 18,
+                    fontFamily: 'Eczar',
+                  ))))
+          : toRet.add(TooltipSpan(
+              message: i.description!,
+              inlineSpan: TextSpan(
+                  text: i.text,
+                  style: TextStyle(
+                    backgroundColor: Colors.redAccent,
+                    height: 1.5,
+                    fontSize: 18,
+                    fontFamily: 'Eczar',
+                  ))));
     }
     return toRet;
   }
@@ -161,7 +191,12 @@ class _MainMainPageForAnalysisInputTextWidget
         padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                print("Exporting file..");
+                String selected_file_name = "textForAnalysis";
+                print("Selected file name = " + selected_file_name);
+                exportFile(selected_file_name);
+              },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
@@ -190,8 +225,8 @@ class _MainMainPageForAnalysisInputTextWidget
         color: const Color(0xFFE9F1E8),
         child: Column(children: [TextInputField(), AnalyzeTextButton()]));
   }
-  Widget TextInputField() {
 
+  Widget TextInputField() {
     return Center(
       child: Container(
           decoration: const BoxDecoration(
@@ -203,8 +238,7 @@ class _MainMainPageForAnalysisInputTextWidget
                 spreadRadius: 1,
               ),
             ],
-            borderRadius:
-            BorderRadius.all(Radius.circular(23)),
+            borderRadius: BorderRadius.all(Radius.circular(23)),
           ),
           margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
           child: TextField(
@@ -213,10 +247,10 @@ class _MainMainPageForAnalysisInputTextWidget
               cursorWidth: 2,
               cursorRadius: Radius.circular(3),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
+                contentPadding:
+                    EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
                 border: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(23)),
+                  borderRadius: BorderRadius.all(Radius.circular(23)),
                   borderSide: BorderSide(
                     width: 0,
                     style: BorderStyle.none,
@@ -226,25 +260,34 @@ class _MainMainPageForAnalysisInputTextWidget
                 fillColor: Color(0xFFF2EEE1),
                 filled: true,
               ),
-              style: TextStyle(height: 1.5,
+              style: TextStyle(
+                  height: 1.5,
                   fontFamily: 'Eczar',
-                  fontSize: 20, color: Colors.black),
+                  fontSize: 20,
+                  color: Colors.black),
               maxLines: 3,
               minLines: 1)),
     );
   }
+
   Widget AnalyzeTextButton() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(top: 25),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: (){
+              onPressed: () async {
                 String textFromTextField = controllerOfTextForAnalysis.text;
-                if(textFromTextField!=''){
-                  // adding report of textFromTextField to reportData with following name: "textForAnalysis"
-                  setState((){
-                    mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+                if (textFromTextField != '') {
+                  List<PDFfile>? files = [];
+                  files.add(PDFfile('textForAnalysis', textFromTextField));
+
+                  Map<String, List<List<SentencePart>>> mistakes =
+                      await Analyzer.getMistakes(files);
+                  Analyzer.reportData.addAll(mistakes);
+                  setState(() {
+                    mistakenSentenceList =
+                        Analyzer.reportData["textForAnalysis"];
                   });
                 }
               },
@@ -252,21 +295,19 @@ class _MainMainPageForAnalysisInputTextWidget
                 primary: const Color(0xFF4D6658),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
                   const Text("Analyze text",
                       style: TextStyle(
-                        color: Color.fromRGBO(
-                            251, 253, 247, 1),
+                        color: Color.fromRGBO(251, 253, 247, 1),
                         fontFamily: 'Eczar',
                         fontSize: 30,
                       )),
                   Padding(
-                    padding:
-                    const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                     child: Image.asset(
                       'Zoomall.png',
                       height: 35,

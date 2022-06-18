@@ -14,23 +14,33 @@ class AppBarActionHome extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10),
       child: SizedBox(
         width: 60,
-        child: MaterialButton(
-          elevation: 3,
-          color: const Color.fromRGBO(242, 238, 225, 1),
-          shape: const CircleBorder(),
-          onPressed: () {
-            Analyzer.reportData.clear();
-            Navigator.pop(contextOfMainPage);
-          },
-          child: const Icon(
-
-            Icons.home_outlined,
-            size: 30,
-            color: Color.fromRGBO(134, 73, 33, 1),
+        child: Tooltip(
+          message: "Back to homepage",
+          padding: EdgeInsets.all(6),
+          margin: EdgeInsets.all(10),
+          showDuration: Duration(seconds: 0),
+          decoration: BoxDecoration(
+            color: Color(0xFF49454F),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+          ),
+          textStyle: TextStyle(color: Colors.white),
+          preferBelow: true,
+          child: MaterialButton(
+            elevation: 3,
+            color: const Color.fromRGBO(242, 238, 225, 1),
+            shape: const CircleBorder(),
+            onPressed: () {
+              Analyzer.reportData.clear();
+              Navigator.pop(contextOfMainPage);
+            },
+            child: const Icon(
+              Icons.home_outlined,
+              size: 30,
+              color: Color.fromRGBO(134, 73, 33, 1),
+            ),
           ),
         ),
       ),
     );
   }
 }
-

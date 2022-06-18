@@ -5,9 +5,9 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:web1_app/BACK-END/AnalyzePDF/FileOfMistakes.dart';
-import '../AnalyzePDF/MistakeClass.dart';
-import '../AnalyzePDF/PDFfileClass.dart';
+import 'package:web1_app/BACK-END/FileOfMistakes.dart';
+import '../MistakeClass.dart';
+import '../PDFfileClass.dart';
 
 Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
   List<Mistake> mistakeList = [];
