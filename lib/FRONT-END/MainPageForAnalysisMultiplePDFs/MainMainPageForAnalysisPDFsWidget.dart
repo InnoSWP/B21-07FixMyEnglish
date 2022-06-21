@@ -206,7 +206,7 @@ class _MainMainPageForAnalysisPDFsWidget
                 String selected_file_name =
                     Analyzer.reportData.keys.elementAt(indexOfSelectedPDF);
                 print("Selected file name = " + selected_file_name);
-                exportFile(selected_file_name);
+                Exporter.downloadFile(Exporter.getCsv(selected_file_name), selected_file_name);
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
