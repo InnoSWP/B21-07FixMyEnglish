@@ -3,23 +3,35 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../PDFfileClass.dart';
+import '../DefaultFileClass.dart';
 
 class PdfAPI{
-  static Future<List<PlatformFile>?> selectFiles() async {
-    FilePickerResult? result;
+  static Future<List<DefaultFile>?> selectFiles() async {
+    // selectFiles() - forces the user to upload
+    // files from his/her files system
+
+    FilePickerResult? tmp;
     try {
-      result = await FilePicker.platform.pickFiles(
+      tmp = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
         allowMultiple: true,
       );
     } catch (err) {
       print("selectFiles: ${err}");
+      return null;
     }
-    return result?.files;
+    if (tmp == null){
+      return null;
+    }
+    List<DefaultFile> result = [];
+    for (var item in tmp.files){
+      result.add(DefaultFile(item.bytes, item.name));
+    }
+    return result;
   }
 
-  static List<PDFfile>? getFilesTexts(List<PlatformFile>? resultFiles){
+  static List<PDFfile>? getFilesTexts(List<DefaultFile>? resultFiles){
     if (resultFiles == null) return null;
     try {
       List<PDFfile> files = [];
