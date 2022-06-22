@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../PDFfileClass.dart';
 
 class PdfAPI{
-  static Future<FilePickerResult?> selectFiles() async {
+  static Future<List<PlatformFile>?> selectFiles() async {
     FilePickerResult? result;
     try {
       result = await FilePicker.platform.pickFiles(
@@ -16,14 +16,14 @@ class PdfAPI{
     } catch (err) {
       print("selectFiles: ${err}");
     }
-    return result;
+    return result?.files;
   }
 
-  static List<PDFfile>? getFilesTexts(FilePickerResult? result){
-    if (result == null) return null;
+  static List<PDFfile>? getFilesTexts(List<PlatformFile>? resultFiles){
+    if (resultFiles == null) return null;
     try {
       List<PDFfile> files = [];
-      for (var item in result.files){
+      for (var item in resultFiles){
         String name = item.name; // !
         Uint8List? itemBytes = item.bytes;
         final PdfDocument document = PdfDocument(inputBytes: itemBytes);
