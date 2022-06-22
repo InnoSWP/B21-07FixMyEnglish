@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../PDFfileClass.dart';
 
 class PdfAPI{
-  static Future<List<PDFfile>?> selectFiles() async {
+  static Future<FilePickerResult?> selectFiles() async {
     FilePickerResult? result;
     try {
       result = await FilePicker.platform.pickFiles(
@@ -13,8 +13,13 @@ class PdfAPI{
         allowedExtensions: ['pdf'],
         allowMultiple: true,
       );
-    }catch (err) {print("selectFiles: ${err}");}
+    } catch (err) {
+      print("selectFiles: ${err}");
+    }
+    return result;
+  }
 
+  static List<PDFfile>? getFilesTexts(FilePickerResult? result){
     if (result == null) return null;
     try {
       List<PDFfile> files = [];
@@ -22,15 +27,16 @@ class PdfAPI{
         String name = item.name; // !
         Uint8List? itemBytes = item.bytes;
         final PdfDocument document = PdfDocument(inputBytes: itemBytes);
-        String text = PdfTextExtractor(document).extractText(); // !
-        text = text.replaceAll('\n', "");
+        final String extracted_text = PdfTextExtractor(document).extractText(); // !
+        final _whitespaceRE = RegExp(r"\s+");
+        final String formated_text = extracted_text.replaceAll('\r\n', ' ').replaceAll(_whitespaceRE, " ");
+        print("Text of file:$formated_text");
         document.dispose();
-
-        var file = PDFfile(name, text);
+        var file = PDFfile(name, formated_text);
         files.add(file);
       }
       return files;
 
-    }catch (err){print("selectFiles: ${err}");}
+    }catch (err){print("selectFiles: ${err}"); return null;}
   }
 }

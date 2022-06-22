@@ -196,7 +196,7 @@ class _IntroWidgetState extends State<IntroWidget> {
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
-                List<PDFfile>? files = await PdfAPI.selectFiles();
+                List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
                   print("problem");
                 }
