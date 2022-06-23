@@ -320,6 +320,7 @@ class _MainMainPageForAnalysisPDFsWidget
                         child: Material(
                             color: Colors.white.withOpacity(0.0),
                             child: InkWell(
+                                key: Key("delete button ${PDFName}"),
                                 onTap: () {
                                   setState(() {
                                     Analyzer.reportData.remove(PDFName);
