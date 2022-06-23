@@ -9,7 +9,7 @@ void main() {
   // adding reports to widget
   group('Writing inside application tests', ()
   {
-    testWidgets("Writing text 1", (WidgetTester tester) async {
+    testWidgets("Writing text inside intro page field 1", (WidgetTester tester) async {
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: IntroWidget()));
@@ -19,7 +19,7 @@ void main() {
       expect(find.text("Hello, It's Mario."), findsOneWidget);
     });
 
-    testWidgets("Writing text 2", (WidgetTester tester) async {
+    testWidgets("Writing text inside intro page field 2", (WidgetTester tester) async {
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: IntroWidget()));
@@ -29,7 +29,7 @@ void main() {
       expect(find.text("I eat 100 eggs every day."), findsOneWidget);
     });
 
-    testWidgets("Writing text 3", (WidgetTester tester) async {
+    testWidgets("Writing text inside report page field 1", (WidgetTester tester) async {
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisInputTextWidget()));
@@ -39,7 +39,7 @@ void main() {
       expect(find.text("Hello, It's Mario."), findsOneWidget);
     });
 
-    testWidgets("Writing text 4", (WidgetTester tester) async {
+    testWidgets("Writing text inside report page field 2", (WidgetTester tester) async {
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisInputTextWidget()));
