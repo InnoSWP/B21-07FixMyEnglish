@@ -1,5 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'IntroAppBarWidget.dart';
@@ -103,11 +104,20 @@ class _IntroWidgetState extends State<IntroWidget> {
               onPressed: () async {
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
+
+                  // uncomment to unmock
+                  /*
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
-
                   Map<String, List<List<SentencePart>>> mistakes =
-                      await Analyzer.getMistakes(files);
+                      await Analyzer.getMistakes(files);*/
+                  // mocked beginning
+                  List <dynamic> files = [];
+                  final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
+                  files.add(jsondata);
+                  Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
+                  // mocked ending
+
                   Analyzer.reportData.addAll(mistakes);
                   Navigator.push(navigatorKey.currentContext!,
                       MaterialPageRoute(builder: (context) {
@@ -196,50 +206,26 @@ class _IntroWidgetState extends State<IntroWidget> {
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
+
+                // uncomment to unmock
+                /*
                 List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
                   print("problem");
                 }
-                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);
-                /*Map<String, List<List<SentencePart>>> mistakes = {
-                  "test1.pdf": [
-                    [
-                      SentencePart("This solution is", null),
-                      SentencePart("n't ", "Описание ошибки"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                  "textForAnalysis": [
-                    [
-                      SentencePart("Analysis: This solution is", null),
-                      SentencePart("n't ",
-                          "Verfasj ljaskldjfkljs klsjdkflj kljsdfkl jdslkjfkj kjkj jk sjlk l ajl d fa saf"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("Analysis: There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                  "test2.pdf": [
-                    [
-                      SentencePart(
-                          "Second: This solution isgdf;lgkl;dskfgdslfkglkdsl; kdlfk kdsf;ll kk ;ldfklgk ;dlfkgl sdkf;l k;lckglkdfkg lkdlfk s;ldfkg;lkds;lf ;kgfbkk;k ;ksfgkdksg kdfg k;ldsk'slfdk odkokgdfoko l kokk okfkk k o ldfgo ldsfkg lkdsfogk kds kok okdl kgfok okgkodfk",
-                          null),
-                      SentencePart("n't ",
-                          "Verfasj ljaskldjfkljs klsfsadk; lls l;fklaskflk kas;lk f;lasdkf l;ks;ldkf kasdfk slkfl sdka;lfksadl ;kf;lsk ;lasdk;lfkas;lkf ;lasdkflsdkd; kk;jk;sjgfkjdfjgd hjljlhjj hjh h hjhjlfdhghdfjgk;jkjgfjkl ljdfklgjjk jkldfjgkdjfgj jdfklgkl jjflgjkldfjjkg kljjgklfjdglja;sjdkfjikljs kldfkj klsjdjfkj sjfkj sj kl jdskf;lj lkjsdjfsjjfjksdfkjl kjl kjlsdfkjl kjl kjlsdkjldsfjk klsadl ksdkl lsksdk jdkflj kljsdfkl jdslkjfkj kjkj jk sjlk l ajl d fa saf"),
-                      SentencePart("the most effective one.", null)
-                    ],
-                    [
-                      SentencePart("Second: There are ", "bad"),
-                      SentencePart("three ways to solve this problem", null)
-                    ]
-                  ],
-                };*/
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);*/
+
+                // mocked beginning
+                List <dynamic> files = [];
+                final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
+                files.add(jsondata);
+                final jsondata1 = await rootBundle.rootBundle.loadString('../../../assets/json2');
+                files.add(jsondata1);
+                final jsondata2 = await rootBundle.rootBundle.loadString('../../../assets/json3');
+                files.add(jsondata2);
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
+                // mocked ending
+
                 Analyzer.reportData.addAll(mistakes);
 
                 Navigator.push(navigatorKey.currentContext!,

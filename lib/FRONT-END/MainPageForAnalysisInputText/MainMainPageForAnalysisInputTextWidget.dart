@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter/services.dart';
 import '../../BACK-END/Exporting/ExportFile.dart';
 import '../../BACK-END/PDFfileClass.dart';
@@ -279,15 +281,28 @@ class _MainMainPageForAnalysisInputTextWidget
               onPressed: () async {
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
+                  // uncomment to unmock
+                  /*
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
-
                   Map<String, List<List<SentencePart>>> mistakes =
-                      await Analyzer.getMistakes(files);
+                      await Analyzer.getMistakes(files);*/
+                  // mocked beginning
+                  List <dynamic> files = [];
+                  final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
+                  files.add(jsondata);
+                  final jsondata1 = await rootBundle.rootBundle.loadString('../../../assets/json2');
+                  files.add(jsondata1);
+                  final jsondata2 = await rootBundle.rootBundle.loadString('../../../assets/json3');
+                  files.add(jsondata2);
+                  Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
+                  // mocked ending
                   Analyzer.reportData.addAll(mistakes);
                   setState(() {
-                    mistakenSentenceList =
-                        Analyzer.reportData["textForAnalysis"];
+                    //uncomment
+                   // mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+                    //mocked
+                    mistakenSentenceList = Analyzer.reportData["test file0.pdf"];
                   });
                 }
               },

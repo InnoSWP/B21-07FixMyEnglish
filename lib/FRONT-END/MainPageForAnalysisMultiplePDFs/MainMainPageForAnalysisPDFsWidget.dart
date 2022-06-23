@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import 'package:web1_app/BACK-END/Exporting/ExportAllFiles.dart';
@@ -10,7 +13,7 @@ import '../../BACK-END/Exporting/ExportFile.dart';
 import 'package:web1_app/BACK-END/PDFfileClass.dart';
 import '../MainPageForAnalysisInputText/TooltipSpan.dart';
 import 'MainAppBarWidget.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' as rootBundle;
 
 // Methods:
 // ExportAllButton
@@ -366,12 +369,20 @@ class _MainMainPageForAnalysisPDFsWidget
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
+                // uncomment to unmock
+                /*
                 List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
                   print("problem");
                 }
-                Map<String, List<List<SentencePart>>> mistakes =
-                    await Analyzer.getMistakes(files!);
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);*/
+                // mocked beginning
+                List <dynamic> files = [];
+                final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
+                files.add(jsondata);
+                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
+                // mocked ending
+
                 setState(() {
                   Analyzer.reportData.addAll(mistakes);
                 });
