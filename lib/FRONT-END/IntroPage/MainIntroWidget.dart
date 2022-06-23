@@ -171,6 +171,7 @@ class _IntroWidgetState extends State<IntroWidget> {
           ),
           margin: const EdgeInsets.only(top: 55),
           child: TextField(
+              key: const Key("textField"),
               controller: controllerOfTextForAnalysis,
               cursorColor: Color.fromRGBO(134, 73, 33, 1),
               cursorWidth: 2,

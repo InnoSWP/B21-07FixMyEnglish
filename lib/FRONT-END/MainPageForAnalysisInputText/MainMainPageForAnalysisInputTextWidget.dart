@@ -244,6 +244,7 @@ class _MainMainPageForAnalysisInputTextWidget
           ),
           margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
           child: TextField(
+              key: Key("textField"),
               controller: controllerOfTextForAnalysis,
               cursorColor: Color.fromRGBO(134, 73, 33, 1),
               cursorWidth: 2,
