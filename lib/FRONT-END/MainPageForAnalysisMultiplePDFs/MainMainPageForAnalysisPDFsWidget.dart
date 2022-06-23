@@ -65,6 +65,7 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget ReportPartWidget() {
     return Expanded(
+      key: indexOfSelectedPDF == -1 ? Key("Empty report"): Key("report part ${Analyzer.reportData.keys.elementAt(indexOfSelectedPDF)}"),
         child: Column(
       children: [
         Container(
@@ -301,6 +302,7 @@ class _MainMainPageForAnalysisPDFsWidget
       child: Padding(
         padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
         child: ElevatedButton(
+          key: Key(PDFName),
             onPressed: () {
               setState(() {
                 mistakenSentenceList = Analyzer.reportData[PDFName];

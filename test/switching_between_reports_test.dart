@@ -16,16 +16,16 @@ void main() {
   group('Switching between tests', ()
   {
     testWidgets("Choosing file 1", (WidgetTester tester) async {
-      final fileButton = find.byKey(ValueKey("report file_2.pdf"));
+      final fileButton = find.byKey(ValueKey("file_2.pdf"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisPDFsWidget()));
       expect(find.text("file_2.pdf"), findsOneWidget);
       await tester.tap(fileButton);
       await tester.pump();
 
-      expect(find.byKey(ValueKey("file_2.pdf report")), findsOneWidget);
+      expect(find.byKey(ValueKey("report part file_2.pdf")), findsOneWidget);
 
-      final elevatedButton = tester.widget<ElevatedButton>(find.byKey(ValueKey("report file_2.pdf")));
+      final elevatedButton = tester.widget<ElevatedButton>(find.byKey(ValueKey("file_2.pdf")));
       final states = <MaterialState>{};
       final bgColor = elevatedButton.style?.backgroundColor?.resolve(states);
 
@@ -33,16 +33,16 @@ void main() {
     });
 
     testWidgets("Choosing file 2", (WidgetTester tester) async {
-      final fileButton = find.byKey(ValueKey("report file_1.pdf"));
+      final fileButton = find.byKey(ValueKey("file_1.pdf"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisPDFsWidget()));
       expect(find.text("file_1.pdf"), findsOneWidget);
       await tester.tap(fileButton);
       await tester.pump();
 
-      expect(find.byKey(ValueKey("file_1.pdf report")), findsOneWidget);
+      expect(find.byKey(ValueKey("report part file_1.pdf")), findsOneWidget);
 
-      final elevatedButton = tester.widget<ElevatedButton>(find.byKey(ValueKey("report file_1.pdf")));
+      final elevatedButton = tester.widget<ElevatedButton>(find.byKey(ValueKey("file_1.pdf")));
       final states = <MaterialState>{};
       final bgColor = elevatedButton.style?.backgroundColor?.resolve(states);
 
