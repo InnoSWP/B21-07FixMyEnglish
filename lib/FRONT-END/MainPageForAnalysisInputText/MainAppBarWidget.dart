@@ -18,12 +18,15 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: const Text(
         'Fix my English',
         style: TextStyle(
-            color: Color.fromRGBO(134, 73, 33, 1),
-            fontFamily: 'Eczar',
-            fontSize: 45,),
+          color: Color.fromRGBO(134, 73, 33, 1),
+          fontFamily: 'Eczar',
+          fontSize: 45,
+        ),
       ),
       actions: <Widget>[
-        FittedBox(child: SvgPicture.asset("vectortransition.svg")),
+        //FittedBox(child:
+         SvgPicture.asset("vectortransition.svg"),
+        //),
         AppBarActionHome(contextOfMainPage),
       ],
     );

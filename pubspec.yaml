@@ -37,17 +37,21 @@ dependencies:
   file_picker: ^4.6.1
   pdfx: ^2.0.1+2
   syncfusion_flutter_pdf: ^20.1.59-beta
+  csv: ^5.0.1
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  html: ^0.15.0
+  js:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  test: ^1.21.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +83,16 @@ flutter:
     - family: Eczar
       fonts:
         - asset: fonts/static/Eczar-Regular.ttf
+          weight: 100
+        - asset: fonts/static/Eczar-Medium.ttf
+          weight: 300
+        - asset: fonts/static/Eczar-SemiBold.ttf
+          weight: 400
+        - asset: fonts/static/Eczar-Bold.ttf
+          weight: 700
+        - asset: fonts/static/Eczar-ExtraBold.ttf
+          weight: 800
+
 
 
   # For details regarding fonts from package dependencies,

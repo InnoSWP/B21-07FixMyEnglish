@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:web1_app/BACK-END/AnalyzePDF/FileOfMistakes.dart';
-import '../AnalyzePDF/MistakeClass.dart';
-import '../AnalyzePDF/PDFfileClass.dart';
+import 'package:web1_app/BACK-END/FileOfMistakes.dart';
+import '../MistakeClass.dart';
+import '../PDFfileClass.dart';
 
+// uncomment this function to unmock
+/*
 Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
   List<Mistake> mistakeList = [];
 
@@ -41,4 +42,16 @@ Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
     mistakeList.add(Mistake("Server Error", "Server Error", "Server Error", "Server Error"));
   }
   return FileOfMistakes(inputFile.name, mistakeList);
+}*/
+
+// mocked function
+Future<FileOfMistakes> respondToAPI(List<dynamic> inputFile, int num) async {
+  List<Mistake> mistakeList = [];
+    print("Successful connection");
+    final body = inputFile;
+    body.forEach((json) {
+      mistakeList.add(Mistake.fromJson(json));
+    });
+
+  return FileOfMistakes("test file${num}.pdf", mistakeList);
 }

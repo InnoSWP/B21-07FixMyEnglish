@@ -24,7 +24,9 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             ),
       ),
       actions: <Widget>[
-        FittedBox(child: SvgPicture.asset("vectortransition.svg")),
+        //FittedBox(child:
+        SvgPicture.asset("vectortransition.svg"),
+        //),
         AppBarActionHome(contextOfMainPage),
       ],
     );
