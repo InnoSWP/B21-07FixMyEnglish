@@ -14,4 +14,16 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
       - run: flutter pub get
-      - run: flutter test
+      - name: testing deleteing files
+        run: flutter test --platform chrome test/deleting_files_test.dart
+      - name: testing exporting files
+        run: flutter test --platform chrome test/export_files_test.dart
+      - name: testing switching between reports
+        run: flutter test --platform chrome test/switching_between_reports_test.dart
+      - name: testing uploading files
+        run: flutter test --platform chrome test/uploading_files_test.dart
+      - name: testing widgets
+        run: flutter test --platform chrome test/widget_test.dart
+      - name: testing writing inside application
+        run: flutter test --platform chrome test/writing_inside_application_test.dart
+
