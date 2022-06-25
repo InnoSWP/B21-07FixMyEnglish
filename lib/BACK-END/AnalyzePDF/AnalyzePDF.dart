@@ -20,22 +20,21 @@ class Analyzer{
     if (mistakeText == ""){
       return [SentencePart(sentenceText, mistakeDescrip)];
     }
-    if (z.length != 2){
-      return [];
-    }
-    if (z[0] == '') {
-      result.add(SentencePart(mistakeText, mistakeDescrip));
-      if (z[1] != ''){
-        result.add(SentencePart(z[1], null));
+
+    // print("\n");
+    // for (var i = 0; i < z.length; i++){
+    //   print("${i} ${z[i]}");
+    // }
+    // print("${sentenceText} ||| ${mistakeDescrip}");
+    // print("\n");
+
+    for (var i = 0; i < z.length; i++){
+      if (z[i] != ""){
+        result.add(SentencePart(z[i], null));
       }
-    }else if (z[1] == '') {
-      result.add(SentencePart(z[0], null));
-      result.add(SentencePart(mistakeText, mistakeDescrip));
-    }
-    else {
-      result.add(SentencePart(z[0], null));
-      result.add(SentencePart(mistakeText, mistakeDescrip));
-      result.add(SentencePart(z[1], null));
+      if (i != z.length - 1) {
+        result.add(SentencePart(mistakeText, mistakeDescrip));
+      }
     }
     return result;
   }
