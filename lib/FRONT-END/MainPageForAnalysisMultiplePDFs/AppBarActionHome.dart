@@ -35,7 +35,7 @@ class AppBarActionHome extends StatelessWidget {
             },
             child: const Icon(
               Icons.home_outlined,
-              size: 30,
+              size: 40,
               color: Color.fromRGBO(134, 73, 33, 1),
             ),
           ),

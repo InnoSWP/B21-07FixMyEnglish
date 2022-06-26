@@ -190,7 +190,7 @@ class _MainMainPageForAnalysisInputTextWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 18, right: 30),
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () {
@@ -204,7 +204,7 @@ class _MainMainPageForAnalysisInputTextWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 7),
               ),
               child: Row(
                 children: <Widget>[
@@ -268,8 +268,8 @@ class _MainMainPageForAnalysisInputTextWidget
                   fontFamily: 'Eczar',
                   fontSize: 20,
                   color: Colors.black),
-              maxLines: 3,
-              minLines: 1)),
+              maxLines: 16,
+              minLines: 16)),
     );
   }
 
