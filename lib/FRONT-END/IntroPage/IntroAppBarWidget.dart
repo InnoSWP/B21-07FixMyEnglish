@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class IntroAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  static const double heightOfAppBarWidget = 80;
+  static const double heightOfAppBarWidget = 85;
 
   const IntroAppBarWidget({Key? key}) : super(key: key);
 
@@ -22,7 +22,7 @@ class IntroAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               color: Color.fromRGBO(134, 73, 33, 1),
               fontFamily: 'Eczar',
               fontSize: 45,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

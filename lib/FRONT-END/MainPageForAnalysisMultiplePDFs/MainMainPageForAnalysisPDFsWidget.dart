@@ -65,16 +65,19 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget ReportPartWidget() {
     return Expanded(
-      key: indexOfSelectedPDF == -1 ? Key("Empty report"): Key("report part ${Analyzer.reportData.keys.elementAt(indexOfSelectedPDF)}"),
+        key: indexOfSelectedPDF == -1
+            ? Key("Empty report")
+            : Key(
+                "report part ${Analyzer.reportData.keys.elementAt(indexOfSelectedPDF)}"),
         child: Column(
-      children: [
-        Container(
-          height: 65,
-        ),
-        MistakenSentenceList(),
-        ExportButton()
-      ],
-    ));
+          children: [
+            Container(
+              height: 65,
+            ),
+            MistakenSentenceList(),
+            ExportButton()
+          ],
+        ));
   }
 
   Widget MistakenSentenceList() {
@@ -83,14 +86,19 @@ class _MainMainPageForAnalysisPDFsWidget
           ? ListView.builder(
               itemCount: mistakenSentenceList?.length,
               itemBuilder: (BuildContext context, int index) {
-                return MistakenSentenceElement(mistakenSentenceList![index]);
+                Widget? x =
+                    MistakenSentenceElement(mistakenSentenceList![index]);
+                return x != null ? x : SizedBox.shrink();
               })
           : Text(
               "Please, click on upload or any button with name of file on right panel"),
     );
   }
 
-  Widget MistakenSentenceElement(text) {
+  Widget? MistakenSentenceElement(text) {
+    if (prepareForCopying(text) == "") {
+      return null;
+    }
     return Container(
         decoration: const BoxDecoration(
           color: const Color(0xFFF2EEE1),
@@ -189,7 +197,7 @@ class _MainMainPageForAnalysisPDFsWidget
               inlineSpan: TextSpan(
                   text: i.text,
                   style: TextStyle(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Color(0x80DD4A4A),
                     height: 1.5,
                     fontSize: 18,
                     fontFamily: 'Eczar',
@@ -210,7 +218,8 @@ class _MainMainPageForAnalysisPDFsWidget
                 String selected_file_name =
                     Analyzer.reportData.keys.elementAt(indexOfSelectedPDF);
                 print("Selected file name = " + selected_file_name);
-                Exporter.downloadFile(Exporter.getCsv(selected_file_name), selected_file_name);
+                Exporter.downloadFile(
+                    Exporter.getCsv(selected_file_name), selected_file_name);
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
@@ -221,7 +230,7 @@ class _MainMainPageForAnalysisPDFsWidget
               ),
               child: Row(
                 children: <Widget>[
-                  const Text("Export",
+                  const Text("Export to CSV",
                       style: TextStyle(
                         color: Color.fromRGBO(251, 253, 247, 1),
                         fontFamily: 'Eczar',
@@ -250,34 +259,22 @@ class _MainMainPageForAnalysisPDFsWidget
         padding: const EdgeInsets.only(top: 25, bottom: 10),
         child: FittedBox(
           child: ElevatedButton(
-              onPressed: () {
-                exportAllFileS();
-              },
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF4D6658),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
-              ),
-              child: Row(
-                children: <Widget>[
-                  const Text("Export all",
-                      style: TextStyle(
-                        color: Color.fromRGBO(251, 253, 247, 1),
-                        fontFamily: 'Eczar',
-                        fontSize: 30,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Image.asset(
-                      'Importpdficon.png',
-                      height: 35,
-                      width: 35,
-                    ),
-                  ),
-                ],
-              )),
+            onPressed: () {
+              exportAllFileS();
+            },
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF4D6658),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+            ),
+            child: Text("Export all to CSV",
+                style: TextStyle(
+                  color: Color.fromRGBO(251, 253, 247, 1),
+                  fontFamily: 'Eczar',
+                  fontSize: 30,
+                )),
+          ),
         ),
       ),
     );
@@ -297,69 +294,67 @@ class _MainMainPageForAnalysisPDFsWidget
   }
 
   Widget PDFElementWidget(String PDFName, bool selected, int index) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-        child: ElevatedButton(
+    return Padding(
+      padding: const EdgeInsets.only(top: 18, left: 30, right: 30),
+      child: ElevatedButton(
           key: Key(PDFName),
-            onPressed: () {
-              setState(() {
-                mistakenSentenceList = Analyzer.reportData[PDFName];
-                indexOfSelectedPDF = index;
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              primary:
-                  !selected ? const Color(0xFF62806F) : const Color(0xFF4D6658),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 30, right: 5, left: 10),
-            ),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.topRight,
-                    child: FittedBox(
-                        child: Material(
-                            color: Colors.white.withOpacity(0.0),
-                            child: InkWell(
-                                key: Key("delete button ${PDFName}"),
-                                onTap: () {
-                                  setState(() {
-                                    Analyzer.reportData.remove(PDFName);
-                                    if (selected) {
-                                      indexOfSelectedPDF = -1;
-                                      mistakenSentenceList = null;
-                                    }
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.highlight_remove,
-                                  color: Colors.white,
-                                ))))),
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Image.asset(
-                        'Importpdficon.png',
-                        height: 35,
-                        width: 35,
-                      ),
-                    ),
-                    Text(PDFName,
-                        style: const TextStyle(
-                          color: Color.fromRGBO(251, 253, 247, 1),
-                          fontFamily: 'Eczar',
-                          fontSize: 20,
-                        )),
-                  ],
+          onPressed: () {
+            setState(() {
+              mistakenSentenceList = Analyzer.reportData[PDFName];
+              indexOfSelectedPDF = index;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            primary:
+                !selected ? const Color(0xFF62806F) : const Color(0xFF4D6658),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Image.asset(
+                  'Importpdficon.png',
+                  height: 35,
+                  width: 35,
                 ),
-              ],
-            )),
-      ),
+              ),
+              Text(PDFName,
+                  style: const TextStyle(
+                    color: Color.fromRGBO(251, 253, 247, 1),
+                    fontFamily: 'Eczar',
+                    fontSize: 20,
+                  )),
+              new Spacer(),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FittedBox(
+                      child: Material(
+                          color: Colors.white.withOpacity(0.0),
+                          child: InkWell(
+                              key: Key("delete button ${PDFName}"),
+                              onTap: () {
+                                setState(() {
+                                  Analyzer.reportData.remove(PDFName);
+                                  if (selected) {
+                                    indexOfSelectedPDF = -1;
+                                    mistakenSentenceList = null;
+                                  }
+                                });
+                              },
+                              child: Icon(
+                                Icons.clear,
+                                size: 20,
+                                color: Colors.white,
+                              )))),
+                ),
+              )
+            ],
+          )),
     );
   }
 
@@ -368,7 +363,8 @@ class _MainMainPageForAnalysisPDFsWidget
       alignment: Alignment.topCenter,
       child: Padding(
         padding: const EdgeInsets.only(top: 15, bottom: 10),
-        child: FittedBox(
+        child: SizedBox(
+          width: 170,
           child: ElevatedButton(
               onPressed: () async {
                 // uncomment to unmock
@@ -379,10 +375,12 @@ class _MainMainPageForAnalysisPDFsWidget
                 }
                 Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);*/
                 // mocked beginning
-                List <dynamic> files = [];
-                final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
+                List<dynamic> files = [];
+                final jsondata = await rootBundle.rootBundle
+                    .loadString('../../../assets/json1');
                 files.add(jsondata);
-                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
+                Map<String, List<List<SentencePart>>> mistakes =
+                    await Analyzer.getMistakes(files);
                 // mocked ending
 
                 setState(() {
@@ -394,26 +392,25 @@ class _MainMainPageForAnalysisPDFsWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
               ),
-              child: Row(
-                children: <Widget>[
-                  const Text("Upload",
-                      style: TextStyle(
-                        color: Color.fromRGBO(251, 253, 247, 1),
-                        fontFamily: 'Eczar',
-                        fontSize: 30,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Image.asset(
-                      'Importpdficon.png',
-                      height: 35,
-                      width: 35,
-                    ),
-                  ),
-                ],
-              )),
+
+              child: Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Spacer(),
+                    Text("Upload",
+                        style: TextStyle(
+                          color: Color.fromRGBO(251, 253, 247, 1),
+                          fontFamily: 'Eczar',
+                          fontSize: 25,
+                          fontWeight: FontWeight.w100,
+                        )),
+                    Expanded(child: Icon(Icons.add_outlined, size: 32,)),
+                  ],
+                ),
+              )
+          ),
         ),
       ),
     );

@@ -177,7 +177,7 @@ class _MainMainPageForAnalysisInputTextWidget
               inlineSpan: TextSpan(
                   text: i.text,
                   style: TextStyle(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Color(0x80DD4A4A),
                     height: 1.5,
                     fontSize: 18,
                     fontFamily: 'Eczar',
