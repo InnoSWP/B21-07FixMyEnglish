@@ -110,7 +110,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                             height: 40,
                             width: 40,
                             child: Container(
-                              color: Colors.redAccent,
+
                               child: Text(
                                 "or",
                                 style: TextStyle(
