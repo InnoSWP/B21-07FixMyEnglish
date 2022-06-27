@@ -290,7 +290,7 @@ class _MainMainPageForAnalysisPDFsWidget
       color: const Color(0xFFE9F1E8),
       child: Column(children: [
         UploadPDFButton(),
-        Container(child: Align(alignment: Alignment.centerRight, child: clearAllButton())),
+        clearAllButton(),
         PDFNamesList(),
         ExportAllButton()
       ]),
@@ -298,45 +298,23 @@ class _MainMainPageForAnalysisPDFsWidget
   }
 
   Widget clearAllButton() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Container(
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 3,
-                offset: Offset(1, 3),
-                spreadRadius: 1,
-              ),
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-          child: FittedBox(
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  Analyzer.reportData.clear();
-                  indexOfSelectedPDF = -1;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF4D6658),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-              ),
-              child: Text("Clear all",
-                  style: TextStyle(
-                    color: Color.fromRGBO(251, 253, 247, 1),
-                    fontFamily: 'Eczar',
-                    fontSize: 30,
-                  )),
-            ),
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(right: 30),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              Analyzer.reportData.clear();
+              indexOfSelectedPDF = -1;
+            });
+          },
+          child: Text("Clear all",
+              style: TextStyle(
+                color: Color(0xFF62806F),
+                fontFamily: 'Eczar',
+                fontSize: 25,
+              )),
         ),
       ),
     );
@@ -399,7 +377,7 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget PDFElementWidget(String PDFName, bool selected, int index) {
     return Padding(
-        padding: const EdgeInsets.only(top: 18, left: 30, right: 30),
+        padding: const EdgeInsets.only(top: 5, left: 30, right: 30),
         child: ElevatedButton(
             key: Key(PDFName),
             onPressed: () {
