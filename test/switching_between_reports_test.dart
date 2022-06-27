@@ -4,6 +4,8 @@ import 'package:web1_app/BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/FRONT-END/MainPageForAnalysisMultiplePDFs/MainMainPageForAnalysisPDFsWidget.dart';
 
+import 'test_helpers.dart';
+
 void main() {
   // adding reports to widget
   List<List<SentencePart>> report_1 = [[SentencePart("Hello ", null),SentencePart("it's", "improper usage"),SentencePart(" me, Mario", null)]];
@@ -16,6 +18,7 @@ void main() {
   group('Switching between tests', ()
   {
     testWidgets("Choosing file 1", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final fileButton = find.byKey(ValueKey("file_2.pdf"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisPDFsWidget()));
@@ -33,6 +36,7 @@ void main() {
     });
 
     testWidgets("Choosing file 2", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final fileButton = find.byKey(ValueKey("file_1.pdf"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisPDFsWidget()));

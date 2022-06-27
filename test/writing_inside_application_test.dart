@@ -5,11 +5,14 @@ import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/FRONT-END/IntroPage/MainIntroWidget.dart';
 import 'package:web1_app/FRONT-END/MainPageForAnalysisInputText/MainMainPageForAnalysisInputTextWidget.dart';
 
+import 'test_helpers.dart';
+
 void main() {
   // adding reports to widget
   group('Writing inside application tests', ()
   {
     testWidgets("Writing text inside intro page field 1", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: IntroWidget()));
@@ -20,6 +23,7 @@ void main() {
     });
 
     testWidgets("Writing text inside intro page field 2", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: IntroWidget()));
@@ -30,6 +34,7 @@ void main() {
     });
 
     testWidgets("Writing text inside report page field 1", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisInputTextWidget()));
@@ -40,6 +45,7 @@ void main() {
     });
 
     testWidgets("Writing text inside report page field 2", (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
       final writeField = find.byKey(ValueKey("textField"));
 
       await tester.pumpWidget(MaterialApp(home: MainMainPageForAnalysisInputTextWidget()));
