@@ -1,11 +1,9 @@
 name: Build, Release app to Github Pages and Firebase Hosting
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows: [Lint Code Base, our-pipeline]
+    types:
+      - completed
 
 jobs:
   build:
