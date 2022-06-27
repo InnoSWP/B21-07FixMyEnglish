@@ -40,6 +40,7 @@ class _MainMainPageForAnalysisInputTextWidget
   Widget build(BuildContext context) {
     // Figma Flutter Generator IntroPage - FRAME
     return MaterialApp(
+      title: "Fix my English",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: MainAppBarWidget(context),

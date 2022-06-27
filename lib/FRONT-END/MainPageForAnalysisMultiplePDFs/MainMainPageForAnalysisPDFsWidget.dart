@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
@@ -15,6 +16,7 @@ import 'package:web1_app/BACK-END/PDFfileClass.dart';
 import '../MainPageForAnalysisInputText/TooltipSpan.dart';
 import 'MainAppBarWidget.dart';
 import 'package:flutter/services.dart' as rootBundle;
+import '../FeedbackPage/FeedbackPage.dart';
 
 // Methods:
 // ExportAllButton
@@ -50,8 +52,14 @@ class _MainMainPageForAnalysisPDFsWidget
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Fix my English",
       scrollBehavior: MaterialScrollBehavior().copyWith(
-        dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.unknown},
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.unknown
+        },
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -90,8 +98,8 @@ class _MainMainPageForAnalysisPDFsWidget
           ? ListView.builder(
               itemCount: mistakenSentenceList?.length,
               itemBuilder: (BuildContext context, int index) {
-                Widget? x =
-                    MistakenSentenceElement(mistakenSentenceList![index]);
+                Widget? x = MistakenSentenceElement(
+                    mistakenSentenceList![index], index);
                 return x != null ? x : SizedBox.shrink();
               })
           : Text(
@@ -99,7 +107,7 @@ class _MainMainPageForAnalysisPDFsWidget
     );
   }
 
-  Widget? MistakenSentenceElement(text) {
+  Widget? MistakenSentenceElement(text, index) {
     if (prepareForCopying(text) == "") {
       return null;
     }
@@ -138,7 +146,18 @@ class _MainMainPageForAnalysisPDFsWidget
                     child: Material(
                         color: Colors.white.withOpacity(0.0),
                         child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  opaque: false, // set to false
+                                  pageBuilder: (_, __, ___) => FeedbackPage(
+                                      convertTextToTextSpans(text),
+                                      index,
+                                      Analyzer.reportData.keys
+                                          .elementAt(indexOfSelectedPDF)),
+                                ),
+                              );
+                            },
                             child: Icon(
                               Icons.warning_rounded,
                               color: Color(0xDD864921),
@@ -166,10 +185,10 @@ class _MainMainPageForAnalysisPDFsWidget
                                 Clipboard.setData(ClipboardData(
                                     text: prepareForCopying(text)));
                               },
-                              child: Icon(
-                                Icons.file_copy,
-                                color: Color(0xDD864921),
-                                size: 30,
+                              child: Image.asset(
+                                "copy.png",
+                                width: 30,
+                                height: 30,
                               ))),
                     ),
                   )
@@ -269,8 +288,57 @@ class _MainMainPageForAnalysisPDFsWidget
     return Container(
       width: 386,
       color: const Color(0xFFE9F1E8),
-      child: Column(
-          children: [UploadPDFButton(), PDFNamesList(), ExportAllButton()]),
+      child: Column(children: [
+        UploadPDFButton(),
+        Container(child: Align(alignment: Alignment.centerRight, child: clearAllButton())),
+        PDFNamesList(),
+        ExportAllButton()
+      ]),
+    );
+  }
+
+  Widget clearAllButton() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 3,
+                offset: Offset(1, 3),
+                spreadRadius: 1,
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
+          child: FittedBox(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  Analyzer.reportData.clear();
+                  indexOfSelectedPDF = -1;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF4D6658),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+              ),
+              child: Text("Clear all",
+                  style: TextStyle(
+                    color: Color.fromRGBO(251, 253, 247, 1),
+                    fontFamily: 'Eczar',
+                    fontSize: 30,
+                  )),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -318,15 +386,15 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget PDFNamesList() {
     return Expanded(
-        child: ListView.builder(
-            itemCount: Analyzer.reportData.length,
-            itemBuilder: (BuildContext context, int index) => Visibility(
-                visible: Analyzer.reportData.keys.elementAt(index) !=
-                    "textForAnalysis",
-                child: PDFElementWidget(
-                    Analyzer.reportData.keys.elementAt(index),
-                    index == indexOfSelectedPDF,
-                    index))));
+        child: Container(
+      child: ListView.builder(
+          itemCount: Analyzer.reportData.length,
+          itemBuilder: (BuildContext context, int index) => Visibility(
+              visible: Analyzer.reportData.keys.elementAt(index) !=
+                  "textForAnalysis",
+              child: PDFElementWidget(Analyzer.reportData.keys.elementAt(index),
+                  index == indexOfSelectedPDF, index))),
+    ));
   }
 
   Widget PDFElementWidget(String PDFName, bool selected, int index) {
@@ -345,7 +413,7 @@ class _MainMainPageForAnalysisPDFsWidget
                   !selected ? const Color(0xFF62806F) : const Color(0xFF4D6658),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(7)),
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 8),
             ),
             child: Stack(
               children: [
@@ -366,9 +434,7 @@ class _MainMainPageForAnalysisPDFsWidget
                             ),
                           ),
                           Expanded(
-                            flex: 1,
                             child: SingleChildScrollView(
-
                               scrollDirection: Axis.horizontal,
                               child: Tooltip(
                                 message: "You can scroll this text",
@@ -377,7 +443,8 @@ class _MainMainPageForAnalysisPDFsWidget
                                 showDuration: Duration(seconds: 0),
                                 decoration: BoxDecoration(
                                   color: Color(0xFF49454F),
-                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
                                 ),
                                 textStyle: TextStyle(color: Colors.white),
                                 preferBelow: true,
@@ -398,10 +465,10 @@ class _MainMainPageForAnalysisPDFsWidget
                 Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
+                    padding: const EdgeInsets.only(right: 4, top: 3),
                     child: SizedBox(
-                        height: 18,
-                        width: 23,
+                        height: 20,
+                        width: 18,
                         child: Material(
                             color: Colors.white.withOpacity(0.0),
                             child: InkWell(
@@ -415,70 +482,15 @@ class _MainMainPageForAnalysisPDFsWidget
                                     }
                                   });
                                 },
-                                child: Icon(
-                                  Icons.clear,
-                                  size: 18,
-                                  color: Colors.white,
+                                child: const Icon(
+                                  Icons.clear_rounded,
+                                  size: 19,
+                                  color: Color.fromARGB(255, 215, 215, 215),
                                 )))),
                   ),
                 )
               ],
             )
-            //       child: Column(
-            //         children: [
-            //           Align(
-            //             alignment: Alignment.topRight,
-            //             child: Padding(
-            //               padding: const EdgeInsets.only(right: 8),
-            //               child: FittedBox(
-            //                   child: Material(
-            //                       color: Colors.white.withOpacity(0.0),
-            //                       child: InkWell(
-            //                           key: Key("delete button ${PDFName}"),
-            //                           onTap: () {
-            //                             setState(() {
-            //                               Analyzer.reportData.remove(PDFName);
-            //                               if (selected) {
-            //                                 indexOfSelectedPDF = -1;
-            //                                 mistakenSentenceList = null;
-            //                               }
-            //                             });
-            //                           },
-            //                           child: Container(
-            //                             color: Colors.redAccent,
-            //                             child: Icon(
-            //                               Icons.clear,
-            //                               size: 20,
-            //                               color: Colors.white,
-            //                             ),
-            //                           )))),
-            //             ),
-            //           ),
-            //           FittedBox(
-            //             child: Container(
-            //               color: Colors.blueAccent,
-            //               child: Row(
-            //                 children: [
-            //                   Padding(
-            //                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            //                     child: Image.asset(
-            //                       'Importpdficon.png',
-            //                       height: 30,
-            //                       width: 30,
-            //                     ),
-            //                   ),
-            //                   Text(PDFName,
-            //                       style: const TextStyle(
-            //                         color: Color.fromRGBO(251, 253, 247, 1),
-            //                         fontFamily: 'Eczar',
-            //                         fontSize: 25,
-            //                       )),
-            //                 ],
-            //               ),
-            //             ),
-            //           )
-            //         ],
-            //       )),
             //
             ));
   }
@@ -531,24 +543,22 @@ class _MainMainPageForAnalysisPDFsWidget
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 ),
-                child: Expanded(
-                  child: Row(
-                    children: <Widget>[
-                      Spacer(),
-                      Text("Upload  ",
-                          style: TextStyle(
-                            color: Color.fromRGBO(251, 253, 247, 1),
-                            fontFamily: 'Eczar',
-                            fontSize: 25,
-                            fontWeight: FontWeight.w100,
-                          )),
-                      Expanded(
-                          child: Icon(
-                        Icons.add_outlined,
-                        size: 32,
-                      )),
-                    ],
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Spacer(),
+                    Text("Upload  ",
+                        style: TextStyle(
+                          color: Color.fromRGBO(251, 253, 247, 1),
+                          fontFamily: 'Eczar',
+                          fontSize: 25,
+                          fontWeight: FontWeight.w100,
+                        )),
+                    Expanded(
+                        child: Icon(
+                      Icons.add_outlined,
+                      size: 32,
+                    )),
+                  ],
                 )),
           ),
         ),
