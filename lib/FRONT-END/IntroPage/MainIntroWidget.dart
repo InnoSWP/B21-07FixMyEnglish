@@ -37,6 +37,7 @@ class _IntroWidgetState extends State<IntroWidget> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
+        title: "Fix my English",
         home: Scaffold(
           appBar: const IntroAppBarWidget(),
           body: Container(
@@ -107,8 +108,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: SizedBox(
-                            height: 40,
-                            width: 40,
+                            height: 45,
                             child: Container(
 
                               child: Text(
@@ -243,12 +243,12 @@ class _IntroWidgetState extends State<IntroWidget> {
                 filled: true,
               ),
               style: TextStyle(
-                  height: 1.45,
+                  height: 1.4,
                   fontFamily: 'Eczar',
-                  fontSize: 20,
+                  fontSize: 23,
                   color: Colors.black),
-              maxLines: 12,
-              minLines: 12)),
+              maxLines: 11,
+              minLines: 11)),
     );
   }
 
