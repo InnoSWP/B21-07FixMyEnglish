@@ -100,6 +100,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: ElevatedButton(
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
+                //
+                // TODO: submit to server
+                //
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
