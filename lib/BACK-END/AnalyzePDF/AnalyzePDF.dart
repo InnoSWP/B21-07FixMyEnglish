@@ -21,13 +21,6 @@ class Analyzer{
       return [SentencePart(sentenceText, mistakeDescrip)];
     }
 
-    // print("\n");
-    // for (var i = 0; i < z.length; i++){
-    //   print("${i} ${z[i]}");
-    // }
-    // print("${sentenceText} ||| ${mistakeDescrip}");
-    // print("\n");
-
     for (var i = 0; i < z.length; i++){
       if (z[i] != ""){
         result.add(SentencePart(z[i], null));
@@ -39,34 +32,35 @@ class Analyzer{
     return result;
   }
 
-  // uncomment this to unmock
-  /*
-  static Future<Map<String, List<List<SentencePart>>>> getMistakes(List<PDFfile> files) async{
+  static Future<Map<String, List<List<SentencePart>>>?> getMistakes(List<PDFfile> files) async{
     // key is a fileName and value contain full text split into
     // sentences
     Map<String, List<List<SentencePart>>> tmp = <String, List<List<SentencePart>>>{};
     for (PDFfile file in files){
       var fileMistakes = await respondToAPI(file);
-      List<List<SentencePart>> value = [];
-
-      for (Mistake m in fileMistakes.mistakes){
-        value.add(__getSentence(m.sentence, m.wrong_phrase, m.description));
+      if (fileMistakes == null){
+        return null;
       }
-      tmp[file.name] = value;
+      else {
+        List<List<SentencePart>> value = [];
+
+        for (Mistake m in fileMistakes.mistakes) {
+          value.add(__getSentence(m.sentence, m.wrong_phrase, m.description));
+        }
+        tmp[file.name] = value;
+      }
     }
     return tmp;
-  }*/
+  }
 
 
-  //mocked function
-  static Future<Map<String, List<List<SentencePart>>>> getMistakes(List<dynamic> files) async{
-    // key is a fileName and value contain full text split into
-    // sentences
+  //mocked function if cant connect to API
+  static Future<Map<String, List<List<SentencePart>>>> getMistakes_mocked(List<dynamic> files) async{
     Map<String, List<List<SentencePart>>> tmp = <String, List<List<SentencePart>>>{};
     int num = 0;
     for (dynamic file in files){
       final list = json.decode(file) as List<dynamic>;
-      var fileMistakes = await respondToAPI(list, num);
+      var fileMistakes = await respondToAPI_mocked(list, num);
       List<List<SentencePart>> value = [];
 
       for (Mistake m in fileMistakes.mistakes){

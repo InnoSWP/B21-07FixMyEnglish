@@ -504,24 +504,22 @@ class _MainMainPageForAnalysisPDFsWidget
             width: 170,
             child: ElevatedButton(
                 onPressed: () async {
-                  // uncomment to unmock
-                  /*
                   List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                   if (files == null) {
                     print("problem");
                   }
-                  Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);*/
-                  // mocked beginning
-                  List<dynamic> files = [];
-                  final jsondata = await rootBundle.rootBundle
-                      .loadString('../../../assets/json1');
-                  files.add(jsondata);
-                  Map<String, List<List<SentencePart>>> mistakes =
-                      await Analyzer.getMistakes(files);
-                  // mocked ending
+                  Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files!);
+                  if(mistakes == null) {
+                    List<dynamic> files_mocked = [];
+                    final jsondata = await rootBundle.rootBundle
+                        .loadString('../../../assets/json1');
+                    files_mocked.add(jsondata);
+                    mistakes =
+                    await Analyzer.getMistakes_mocked(files_mocked);
+                  }
 
                   setState(() {
-                    Analyzer.reportData.addAll(mistakes);
+                    Analyzer.reportData.addAll(mistakes!);
                   });
                 },
                 style: ElevatedButton.styleFrom(
