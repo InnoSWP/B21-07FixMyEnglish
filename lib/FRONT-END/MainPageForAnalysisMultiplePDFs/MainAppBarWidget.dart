@@ -3,7 +3,7 @@ import 'AppBarActionHome.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  static const double heightOfAppBarWidget = 80;
+  static const double heightOfAppBarWidget = 85;
   BuildContext contextOfMainPage;
 
   MainAppBarWidget(this.contextOfMainPage, {Key? key}) : super(key: key);
