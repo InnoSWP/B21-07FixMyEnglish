@@ -154,17 +154,32 @@ class _IntroWidgetState extends State<IntroWidget> {
                 onPressed: () async {
                   String textFromTextField = controllerOfTextForAnalysis.text;
                   if (textFromTextField != '') {
-
                     List<PDFfile>? files = [];
-                    files.add(PDFfile('textForAnalysis', textFromTextField));
+                    // files.add(PDFfile('textForAnalysis', textFromTextField));
 
-                    Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files);
-                    if(mistakes == null) {
+                    Map<String, List<List<SentencePart>>>?
+                        mistakes; // = await Analyzer.getMistakes(files);
+                    if (mistakes == null) {
                       List<dynamic> files = [];
                       final jsondata = await rootBundle.rootBundle
                           .loadString('../../../assets/json1');
                       files.add(jsondata);
                       mistakes = await Analyzer.getMistakes_mocked(files);
+                      Analyzer.reportData["textForAnalysis"] = [
+                        [
+                          SentencePart(textFromTextField + " ", null, ""),
+                          SentencePart("text ", "desc", "")
+                        ],
+                        [
+                          SentencePart("text ", "desc", ""),
+                          SentencePart(textFromTextField, null, "")
+                        ]
+                      ];
+                      controllerOfTextForAnalysis.text = "";
+                      Navigator.push(navigatorKey.currentContext!,
+                          MaterialPageRoute(builder: (context) {
+                        return MainMainPageForAnalysisInputTextWidget();
+                      }));
                     }
 
                     // // mocked beginning
@@ -177,10 +192,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                     // // mocked ending
                     //
                     // Analyzer.reportData.addAll(mistakes);
-                    Navigator.push(navigatorKey.currentContext!,
-                        MaterialPageRoute(builder: (context) {
-                      return const MainMainPageForAnalysisInputTextWidget();
-                    }));
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -276,14 +287,15 @@ class _IntroWidgetState extends State<IntroWidget> {
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
-
-                List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
+                List<PDFfile>? files =
+                    PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
                   print("Problem: no files chosen!");
                 }
-                Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files!);
+                Map<String, List<List<SentencePart>>>? mistakes =
+                    await Analyzer.getMistakes(files!);
 
-                if(mistakes == null){
+                if (mistakes == null) {
                   List<dynamic> files = [];
                   final jsondata = await rootBundle.rootBundle
                       .loadString('../../../assets/json1');

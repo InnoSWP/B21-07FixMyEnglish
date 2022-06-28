@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,13 +40,12 @@ class MainMainPageForAnalysisPDFsWidget extends StatefulWidget {
 class _MainMainPageForAnalysisPDFsWidget
     extends State<MainMainPageForAnalysisPDFsWidget> {
   List<List<SentencePart>>? mistakenSentenceList;
-  late int indexOfSelectedPDF;
+  int indexOfSelectedPDF = 0;
 
   @override
   void initState() {
     super.initState();
     mistakenSentenceList = Analyzer.reportData[Analyzer.reportData.keys.first];
-    indexOfSelectedPDF = 0;
   }
 
   @override
@@ -238,7 +237,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 20, right: 30),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 20, right: 54),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [
@@ -298,26 +297,111 @@ class _MainMainPageForAnalysisPDFsWidget
   }
 
   Widget clearAllButton() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 30),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              Analyzer.reportData.clear();
-              indexOfSelectedPDF = -1;
-            });
-          },
-          child: Text("Clear all",
-              style: TextStyle(
-                color: Color(0xFF62806F),
-                fontFamily: 'Eczar',
-                fontSize: 25,
-              )),
+    return Analyzer.reportData != null && Analyzer.reportData.length != 0
+        ? Padding(
+            padding: const EdgeInsets.only(right: 37),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () async {
+                  bool approval = await dialogForClearAllButton();
+                  print(approval);
+                  if (approval)
+                    setState(() {
+                      mistakenSentenceList = null;
+                      Analyzer.reportData.clear();
+                      indexOfSelectedPDF = -1;
+                    });
+                },
+                child: Text("Remove all",
+                    style: TextStyle(
+                      color: Color(0xFF62806F),
+                      fontFamily: 'Eczar',
+                      fontSize: 25,
+                    )),
+              ),
+            ),
+          )
+        : SizedBox.shrink();
+  }
+
+  Future<bool> dialogForClearAllButton() async {
+    bool toRet = false;
+    Dialog dialog = Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      //this right here
+      child: Container(
+        height: 160.0,
+        width: 200.0,
+        decoration: const BoxDecoration(
+          color: Color(0xFFF2EEE1),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Are you sure?',
+                  style: TextStyle(
+                      fontFamily: 'Eczar', color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 8.0, left: 20, right: 20),
+                child: Text(
+                  'This will remove all your files.',
+                  style: TextStyle(fontFamily: 'Eczar', color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w100),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 30.0, bottom: 20),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 60),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          toRet = true;
+                        },
+                        child: Text(
+                          'ACCEPT',
+                          style: TextStyle(
+                              fontFamily: 'Eczar',
+                              fontSize: 18.0,
+                              color: Color(0xFF4D6658),
+                          fontWeight: FontWeight.w400),
+                        )),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        toRet = false;
+                      },
+                      child: Text(
+                        'CANCEL',
+                        style: TextStyle(
+                            fontFamily: 'Eczar',
+                            color: Color(0xFFDD4A4A),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500),
+                      )),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
+    await showDialog(
+        context: context, builder: (BuildContext context) => dialog);
+    return toRet;
   }
 
   Widget ExportAllButton() {
@@ -347,7 +431,7 @@ class _MainMainPageForAnalysisPDFsWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 45, vertical: 0),
               ),
               child: Text("Export all to CSV",
                   style: TextStyle(
@@ -377,7 +461,7 @@ class _MainMainPageForAnalysisPDFsWidget
 
   Widget PDFElementWidget(String PDFName, bool selected, int index) {
     return Padding(
-        padding: const EdgeInsets.only(top: 5, left: 30, right: 30),
+        padding: const EdgeInsets.only(bottom: 15, left: 37, right: 37),
         child: ElevatedButton(
             key: Key(PDFName),
             onPressed: () {
@@ -400,7 +484,7 @@ class _MainMainPageForAnalysisPDFsWidget
                   child: FittedBox(
                     child: Container(
                       height: 60,
-                      width: 300,
+                      width: 285,
                       child: Row(
                         children: [
                           Padding(
@@ -494,18 +578,19 @@ class _MainMainPageForAnalysisPDFsWidget
             width: 170,
             child: ElevatedButton(
                 onPressed: () async {
-                  List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
+                  List<PDFfile>? files =
+                      PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                   if (files == null) {
                     print("Problem: no files chosen!");
                   }
-                  Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files!);
-                  if(mistakes == null) {
+                  Map<String, List<List<SentencePart>>>? mistakes =
+                      await Analyzer.getMistakes(files!);
+                  if (mistakes == null) {
                     List<dynamic> files_mocked = [];
                     final jsondata = await rootBundle.rootBundle
                         .loadString('../../../assets/json1');
                     files_mocked.add(jsondata);
-                    mistakes =
-                    await Analyzer.getMistakes_mocked(files_mocked);
+                    mistakes = await Analyzer.getMistakes_mocked(files_mocked);
                   }
 
                   setState(() {

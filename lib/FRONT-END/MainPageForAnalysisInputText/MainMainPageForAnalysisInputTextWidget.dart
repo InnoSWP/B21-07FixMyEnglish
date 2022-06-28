@@ -220,7 +220,7 @@ class _MainMainPageForAnalysisInputTextWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 18, right: 30),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 18, right: 53),
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () {
@@ -254,7 +254,7 @@ class _MainMainPageForAnalysisInputTextWidget
 
   Widget TextInputPartWidget() {
     return Container(
-        width: 386,
+        width: 470,
         color: const Color(0xFFE9F1E8),
         child: Column(children: [TextInputField(), AnalyzeTextButton()]));
   }

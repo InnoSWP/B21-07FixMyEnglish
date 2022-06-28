@@ -20,7 +20,7 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
           color: Color.fromRGBO(134, 73, 33, 1),
           fontFamily: 'Eczar',
-          fontSize: 45,
+          fontSize: 50,
         ),
       ),
       actions: <Widget>[
