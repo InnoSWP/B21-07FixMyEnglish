@@ -14,19 +14,19 @@ import 'RespondToAPI.dart';
 
 class Analyzer{
   static Map<String, List<List<SentencePart>>> reportData = <String, List<List<SentencePart>>>{};
-  static List<SentencePart> __getSentence(String sentenceText, String mistakeText, String mistakeDescrip){
+  static List<SentencePart> __getSentence(String sentenceText, String mistakeText, String mistakeDescrip, String label){
     List<SentencePart> result = [];
     var z = sentenceText.split(mistakeText);
     if (mistakeText == ""){
-      return [SentencePart(sentenceText, mistakeDescrip)];
+      return [SentencePart(sentenceText, mistakeDescrip, label)];
     }
 
     for (var i = 0; i < z.length; i++){
       if (z[i] != ""){
-        result.add(SentencePart(z[i], null));
+        result.add(SentencePart(z[i], null, null));
       }
       if (i != z.length - 1) {
-        result.add(SentencePart(mistakeText, mistakeDescrip));
+        result.add(SentencePart(mistakeText, mistakeDescrip, label));
       }
     }
     return result;
@@ -45,7 +45,7 @@ class Analyzer{
         List<List<SentencePart>> value = [];
 
         for (Mistake m in fileMistakes.mistakes) {
-          value.add(__getSentence(m.sentence, m.wrong_phrase, m.description));
+          value.add(__getSentence(m.sentence, m.wrong_phrase, m.description, m.label));
         }
         tmp[file.name] = value;
       }
@@ -64,7 +64,7 @@ class Analyzer{
       List<List<SentencePart>> value = [];
 
       for (Mistake m in fileMistakes.mistakes){
-        value.add(__getSentence(m.sentence, m.wrong_phrase, m.description));
+        value.add(__getSentence(m.sentence, m.wrong_phrase, m.description, m.label));
       }
       tmp["12345678901234567890 FIle${num}.pdf"] = value;
       num ++;
