@@ -1,7 +1,12 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
+import 'package:web1_app/BACK-END/PDFfileClass.dart';
 import 'package:web1_app/FRONT-END/MainPageForAnalysisInputText/TooltipSpan.dart';
+
+import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 
 class FeedbackPage extends StatefulWidget {
   int indexOfSentenceInPDFFile;
@@ -10,14 +15,16 @@ class FeedbackPage extends StatefulWidget {
   FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile, this.PDFname, {Key? key}) : super(key: key);
 
   @override
-  State<FeedbackPage> createState() => _FeedbackPageState(TextSpans);
+  State<FeedbackPage> createState() => _FeedbackPageState(TextSpans, indexOfSentenceInPDFFile, PDFname);
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
   @override
   final controllerOfTextForAnalysis = TextEditingController();
   List<TooltipSpan> textSpans;
-  _FeedbackPageState(this.textSpans);
+  int indexOfSentenceInPDFFile;
+  String PDFname;
+  _FeedbackPageState(this.textSpans, this.indexOfSentenceInPDFFile, this.PDFname);
 
   @override
   void dispose() {
@@ -100,9 +107,35 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: ElevatedButton(
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
-                //
-                // TODO: submit to server
-                //
+                try {
+                  final CollectionReference reports = FirebaseFirestore.instance.collection("reports");
+                  String match = "";
+                  String sentence = "";
+                  String? label = "";
+                  String? description = "";
+                  String reason = textOfReport;
+                  List<SentencePart> mistakenSentence = Analyzer.reportData[PDFname]![indexOfSentenceInPDFFile];
+                  for (SentencePart sp in mistakenSentence){
+                    sentence += sp.text;
+                    if(sp.description != null){
+                      label = sp.label;
+                      description = sp.description;
+                      match = sp.text;
+                    }
+                  }
+                  Map<String, dynamic> postdata = {
+                    "match": match,
+                    "sentence": sentence,
+                    "label": label,
+                    "description": description,
+                    "reason": reason
+                  };
+                  await reports.add(postdata);
+                }
+                catch(e){
+                  print(e);
+                }
+
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
