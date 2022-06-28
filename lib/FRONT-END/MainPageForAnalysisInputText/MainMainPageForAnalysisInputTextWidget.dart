@@ -40,6 +40,7 @@ class _MainMainPageForAnalysisInputTextWidget
   Widget build(BuildContext context) {
     // Figma Flutter Generator IntroPage - FRAME
     return MaterialApp(
+      title: "Fix my English",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: MainAppBarWidget(context),
@@ -177,7 +178,7 @@ class _MainMainPageForAnalysisInputTextWidget
               inlineSpan: TextSpan(
                   text: i.text,
                   style: TextStyle(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Color(0x80DD4A4A),
                     height: 1.5,
                     fontSize: 18,
                     fontFamily: 'Eczar',
@@ -190,7 +191,7 @@ class _MainMainPageForAnalysisInputTextWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 10, right: 30),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 18, right: 30),
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () {
@@ -204,7 +205,7 @@ class _MainMainPageForAnalysisInputTextWidget
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 7),
               ),
               child: Row(
                 children: <Widget>[
@@ -268,8 +269,8 @@ class _MainMainPageForAnalysisInputTextWidget
                   fontFamily: 'Eczar',
                   fontSize: 20,
                   color: Colors.black),
-              maxLines: 3,
-              minLines: 1)),
+              maxLines: 16,
+              minLines: 16)),
     );
   }
 
@@ -280,30 +281,27 @@ class _MainMainPageForAnalysisInputTextWidget
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
+                bool success = true;
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
-                  // uncomment to unmock
-                  /*
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
-                  Map<String, List<List<SentencePart>>> mistakes =
-                      await Analyzer.getMistakes(files);*/
-                  // mocked beginning
-                  List <dynamic> files = [];
-                  final jsondata = await rootBundle.rootBundle.loadString('../../../assets/json1');
-                  files.add(jsondata);
-                  final jsondata1 = await rootBundle.rootBundle.loadString('../../../assets/json2');
-                  files.add(jsondata1);
-                  final jsondata2 = await rootBundle.rootBundle.loadString('../../../assets/json3');
-                  files.add(jsondata2);
-                  Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files);
-                  // mocked ending
+                  Map<String, List<List<SentencePart>>>? mistakes =
+                      await Analyzer.getMistakes(files);
+                  if(mistakes == null) {
+                    success = false;
+                    List <dynamic> files = [];
+                    final jsondata = await rootBundle.rootBundle.loadString(
+                        '../../../assets/json1');
+                    files.add(jsondata);
+                    mistakes = await Analyzer.getMistakes_mocked(files);
+                  }
                   Analyzer.reportData.addAll(mistakes);
                   setState(() {
-                    //uncomment
-                   // mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
-                    //mocked
-                    mistakenSentenceList = Analyzer.reportData["test file0.pdf"];
+                    if (success)
+                      mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+                    else
+                      mistakenSentenceList = Analyzer.reportData["12345678901234567890 FIle0.pdf"];
                   });
                 }
               },
