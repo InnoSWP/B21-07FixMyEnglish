@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter/services.dart';
 import '../../BACK-END/Exporting/ExportFile.dart';
+import '../../BACK-END/PDFfileClass.dart';
 import '../FeedbackPage/FeedbackPage.dart';
 import 'MainAppBarWidget.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
@@ -310,35 +311,27 @@ class _MainMainPageForAnalysisInputTextWidget
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
+                bool success = true;
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
-                  // uncomment to unmock
-                  /*
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
-                  Map<String, List<List<SentencePart>>> mistakes =
-                      await Analyzer.getMistakes(files);*/
-                  // mocked beginning
-                  List<dynamic> files = [];
-                  final jsondata = await rootBundle.rootBundle
-                      .loadString('../../../assets/json1');
-                  files.add(jsondata);
-                  final jsondata1 = await rootBundle.rootBundle
-                      .loadString('../../../assets/json2');
-                  files.add(jsondata1);
-                  final jsondata2 = await rootBundle.rootBundle
-                      .loadString('../../../assets/json3');
-                  files.add(jsondata2);
-                  Map<String, List<List<SentencePart>>> mistakes =
+                  Map<String, List<List<SentencePart>>>? mistakes =
                       await Analyzer.getMistakes(files);
-                  // mocked ending
+                  if(mistakes == null) {
+                    success = false;
+                    List <dynamic> files = [];
+                    final jsondata = await rootBundle.rootBundle.loadString(
+                        '../../../assets/json1');
+                    files.add(jsondata);
+                    mistakes = await Analyzer.getMistakes_mocked(files);
+                  }
                   Analyzer.reportData.addAll(mistakes);
                   setState(() {
-                    //uncomment
-                    // mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
-                    //mocked
-                    mistakenSentenceList =
-                        Analyzer.reportData["test file0.pdf"];
+                    if (success)
+                      mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+                    else
+                      mistakenSentenceList = Analyzer.reportData["12345678901234567890 FIle0.pdf"];
                   });
                 }
               },

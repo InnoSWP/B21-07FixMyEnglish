@@ -154,12 +154,18 @@ class _IntroWidgetState extends State<IntroWidget> {
                 onPressed: () async {
                   String textFromTextField = controllerOfTextForAnalysis.text;
                   if (textFromTextField != '') {
-                    // uncomment to unmock
-                    /*
+
                     List<PDFfile>? files = [];
                     files.add(PDFfile('textForAnalysis', textFromTextField));
-                    Map<String, List<List<SentencePart>>> mistakes =
-                        await Analyzer.getMistakes(files);*/
+
+                    Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files);
+                    if(mistakes == null) {
+                      List<dynamic> files = [];
+                      final jsondata = await rootBundle.rootBundle
+                          .loadString('../../../assets/json1');
+                      files.add(jsondata);
+                      mistakes = await Analyzer.getMistakes_mocked(files);
+                    }
 
                     // // mocked beginning
                     // List<dynamic> files = [];
@@ -171,9 +177,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                     // // mocked ending
                     //
                     // Analyzer.reportData.addAll(mistakes);
-                    Analyzer.reportData["textForAnalysis"] = [
-                      [SentencePart(textFromTextField, "desc"), SentencePart(" text", null), SentencePart("text", "desc")], [], []
-                    ];
                     Navigator.push(navigatorKey.currentContext!,
                         MaterialPageRoute(builder: (context) {
                       return const MainMainPageForAnalysisInputTextWidget();
@@ -273,28 +276,26 @@ class _IntroWidgetState extends State<IntroWidget> {
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
-                // uncomment to unmock
-                /*
+
                 List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
-                  print("problem");
+                  print("Problem: no files chosen!");
                 }
-                Map<String, List<List<SentencePart>>> mistakes = await Analyzer.getMistakes(files!);*/
+                Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files!);
 
-                // mocked beginning
-                List<dynamic> files = [];
-                final jsondata = await rootBundle.rootBundle
-                    .loadString('../../../assets/json1');
-                files.add(jsondata);
-                final jsondata1 = await rootBundle.rootBundle
-                    .loadString('../../../assets/json2');
-                files.add(jsondata1);
-                final jsondata2 = await rootBundle.rootBundle
-                    .loadString('../../../assets/json3');
-                files.add(jsondata2);
-                Map<String, List<List<SentencePart>>> mistakes =
-                    await Analyzer.getMistakes(files);
-                // mocked ending
+                if(mistakes == null){
+                  List<dynamic> files = [];
+                  final jsondata = await rootBundle.rootBundle
+                      .loadString('../../../assets/json1');
+                  files.add(jsondata);
+                  final jsondata1 = await rootBundle.rootBundle
+                      .loadString('../../../assets/json2');
+                  files.add(jsondata1);
+                  final jsondata2 = await rootBundle.rootBundle
+                      .loadString('../../../assets/json3');
+                  files.add(jsondata2);
+                  mistakes = await Analyzer.getMistakes_mocked(files);
+                }
 
                 Analyzer.reportData.addAll(mistakes);
                 Analyzer.reportData["test file0.pdf"]?.forEach((el) {

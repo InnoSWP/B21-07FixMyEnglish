@@ -8,9 +8,7 @@ import 'package:web1_app/BACK-END/FileOfMistakes.dart';
 import '../MistakeClass.dart';
 import '../PDFfileClass.dart';
 
-// uncomment this function to unmock
-/*
-Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
+Future<FileOfMistakes?> respondToAPI(PDFfile inputFile) async {
   List<Mistake> mistakeList = [];
 
   print("Connecting to API...");
@@ -39,15 +37,15 @@ Future<FileOfMistakes> respondToAPI(PDFfile inputFile) async {
   }
   else{
     print("Unsuccessful connection. Code: " + response.statusCode.toString());
-    mistakeList.add(Mistake("Server Error", "Server Error", "Server Error", "Server Error"));
+    return null;
   }
   return FileOfMistakes(inputFile.name, mistakeList);
-}*/
+}
 
-// mocked function
-Future<FileOfMistakes> respondToAPI(List<dynamic> inputFile, int num) async {
+// mocked function if can't connect to API
+Future<FileOfMistakes> respondToAPI_mocked(List<dynamic> inputFile, int num) async {
   List<Mistake> mistakeList = [];
-    print("Successful connection");
+    print("Mocked connection");
     final body = inputFile;
     body.forEach((json) {
       mistakeList.add(Mistake.fromJson(json));
