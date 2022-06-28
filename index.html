@@ -34,12 +34,26 @@
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '560044731';
+    var serviceWorkerVersion = '3088982555';
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCU0by9CaHRmD-A12cde3cwhLLc1huwwms",
+    authDomain: "bs-07fixmyenglish.firebaseapp.com",
+    projectId: "bs-07fixmyenglish",
+    storageBucket: "bs-07fixmyenglish.appspot.com",
+    messagingSenderId: "1005894662940",
+    appId: "1:1005894662940:web:b8b08ccc0e62dbd25998d9"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+</script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
