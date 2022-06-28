@@ -19,7 +19,8 @@ class FeedbackPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<FeedbackPage> createState() => _FeedbackPageState(TextSpans, indexOfSentenceInPDFFile, PDFname);
+  State<FeedbackPage> createState() =>
+      _FeedbackPageState(TextSpans, indexOfSentenceInPDFFile, PDFname);
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
@@ -29,7 +30,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   int indexOfSentenceInPDFFile;
   String PDFname;
-  _FeedbackPageState(this.textSpans, this.indexOfSentenceInPDFFile, this.PDFname);
+
+  _FeedbackPageState(
+      this.textSpans, this.indexOfSentenceInPDFFile, this.PDFname);
 
   @override
   void dispose() {
@@ -80,7 +83,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             color: Colors.black),
                       )),
                 ),
-                mistakenSentence(),
+                Expanded(flex: 1, child: mistakenSentence()),
                 textFieldForFillingOutReport(),
                 submitButton(),
               ],
@@ -112,16 +115,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
                 try {
-                  final CollectionReference reports = FirebaseFirestore.instance.collection("reports");
+                  final CollectionReference reports =
+                      FirebaseFirestore.instance.collection("reports");
                   String match = "";
                   String sentence = "";
                   String? label = "";
                   String? description = "";
                   String reason = textOfReport;
-                  List<SentencePart> mistakenSentence = Analyzer.reportData[PDFname]![indexOfSentenceInPDFFile];
-                  for (SentencePart sp in mistakenSentence){
+                  List<SentencePart> mistakenSentence =
+                      Analyzer.reportData[PDFname]![indexOfSentenceInPDFFile];
+                  for (SentencePart sp in mistakenSentence) {
                     sentence += sp.text;
-                    if(sp.description != null){
+                    if (sp.description != null) {
                       label = sp.label;
                       description = sp.description;
                       match = sp.text;
@@ -135,8 +140,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     "reason": reason
                   };
                   await reports.add(postdata);
-                }
-                catch(e){
+                } catch (e) {
                   print(e);
                 }
 
@@ -174,13 +178,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Expanded(
-              child: SingleChildScrollView(
-                child: RichText(
-                  text: TextSpan(
-                    text: '',
-                    children: textSpans,
-                  ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: RichText(
+                text: TextSpan(
+                  text: '',
+                  children: textSpans,
                 ),
               ),
             ),
