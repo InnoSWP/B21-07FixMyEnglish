@@ -272,7 +272,7 @@ class _IntroWidgetState extends State<IntroWidget> {
 
                 List<PDFfile>? files = PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
                 if (files == null) {
-                  print("problem");
+                  print("Problem: no files chosen!");
                 }
                 Map<String, List<List<SentencePart>>>? mistakes = await Analyzer.getMistakes(files!);
 
