@@ -11,9 +11,11 @@ class Exporter{
     List<List<dynamic>> rows = [];
 
     List<dynamic> rowHeader = [];
-    rowHeader.add("Sentence");
-    rowHeader.add("Mistake");
-    rowHeader.add("Description");
+    rowHeader.add("match");
+    rowHeader.add("sentence");
+    rowHeader.add("label");
+    rowHeader.add("description");
+
     rows.add(rowHeader);
 
     final List<List<SentencePart>>? report = Analyzer.reportData[file_name];
@@ -21,18 +23,25 @@ class Exporter{
 
     for (int i = 0; i < report!.length; i++){
       row = [];
-      String sentence = "";
+      String? sentence = "";
       String mistake = "";
       String description = "";
+      String label = "";
       for(int j = 0; j < report[i].length; j++){
-        sentence += report[i][j].text;
+        sentence = sentence! + report[i][j].text;
         if(report[i][j].description != null){
+          label = report[i][j].label!;
           mistake = report[i][j].text;
           description = report[i][j].description!;
         }
       }
-      row.add(sentence);
+      if (mistake == sentence){
+        // situation when mistake is a full sentence
+        mistake = "";
+      }
       row.add(mistake);
+      row.add(sentence);
+      row.add(label);
       row.add(description);
       rows.add(row);
     }
