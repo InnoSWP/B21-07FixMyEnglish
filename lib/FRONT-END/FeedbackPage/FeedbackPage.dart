@@ -7,7 +7,11 @@ class FeedbackPage extends StatefulWidget {
   int indexOfSentenceInPDFFile;
   String PDFname;
   List<TooltipSpan> TextSpans;
-  FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile, this.PDFname, {Key? key}) : super(key: key);
+
+  FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile,
+      this.PDFname,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState(TextSpans);
@@ -17,6 +21,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   final controllerOfTextForAnalysis = TextEditingController();
   List<TooltipSpan> textSpans;
+
   _FeedbackPageState(this.textSpans);
 
   @override
@@ -64,7 +69,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         style: TextStyle(
                             height: 1.45,
                             fontFamily: 'Eczar',
-                            fontStyle: FontStyle.italic,
                             fontSize: 23,
                             color: Colors.black),
                       )),
@@ -100,6 +104,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: ElevatedButton(
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
+                //...
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
@@ -134,7 +140,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Expanded(
-              flex: 1,
               child: SingleChildScrollView(
                 child: RichText(
                   text: TextSpan(
@@ -157,8 +162,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           cursorWidth: 2,
           cursorRadius: Radius.circular(3),
           decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.all(15),
+            contentPadding: EdgeInsets.all(15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               borderSide: BorderSide(
@@ -166,7 +170,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 style: BorderStyle.none,
               ),
             ),
-            hintText: "Tell us more about problem",
+            hintText: "What is wrong with the sentence?",
             fillColor: Color(0xFFFBFDF7),
             filled: true,
           ),
@@ -185,13 +189,31 @@ class _FeedbackPageState extends State<FeedbackPage> {
         alignment: Alignment.topCenter,
         child: Container(
             color: Color(0xFFF2EEE1),
-            child: Text("Report form",
-                style: TextStyle(
-                    height: 1.45,
-                    fontFamily: 'Eczar',
-                    fontSize: 35,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF7A370B)))));
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, right: 5),
+                  child: Icon(
+                    Icons.warning_rounded,
+                    color: Color(0xDD864921),
+                    size: 35,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text("Report form    ",
+                      style: TextStyle(
+                          height: 1.45,
+                          fontFamily: 'Eczar',
+                          fontSize: 35,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF7A370B))),
+                ),
+                Spacer()
+              ],
+            )));
   }
 
   Widget closeButton() {
@@ -201,19 +223,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
         height: 32,
         child: Align(
           alignment: Alignment.topRight,
-          child: Expanded(
-            child: Material(
-                color: Colors.white.withOpacity(0.0),
-                child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.clear_rounded,
-                      size: 32,
-                      color: Color(0xFF7A370B),
-                    ))),
-          ),
+          child: Material(
+              color: Colors.white.withOpacity(0.0),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.clear_rounded,
+                    size: 32,
+                    color: Color(0xFF7A370B),
+                  ))),
         ),
       ),
     );

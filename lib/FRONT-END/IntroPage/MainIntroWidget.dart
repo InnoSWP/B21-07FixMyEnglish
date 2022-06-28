@@ -110,7 +110,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                           child: SizedBox(
                             height: 45,
                             child: Container(
-
                               child: Text(
                                 "or",
                                 style: TextStyle(
@@ -139,21 +138,19 @@ class _IntroWidgetState extends State<IntroWidget> {
       child: Padding(
         padding: const EdgeInsets.only(top: 25),
         child: Container(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 3,
-                  offset: Offset(1, 3),
-                  spreadRadius: 1,
-                ),
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(40)),
-            ),
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 3,
+                offset: Offset(1, 3),
+                spreadRadius: 1,
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
           child: FittedBox(
-
             child: ElevatedButton(
-
                 onPressed: () async {
                   String textFromTextField = controllerOfTextForAnalysis.text;
                   if (textFromTextField != '') {
@@ -163,16 +160,20 @@ class _IntroWidgetState extends State<IntroWidget> {
                     files.add(PDFfile('textForAnalysis', textFromTextField));
                     Map<String, List<List<SentencePart>>> mistakes =
                         await Analyzer.getMistakes(files);*/
-                    // mocked beginning
-                    List<dynamic> files = [];
-                    final jsondata = await rootBundle.rootBundle
-                        .loadString('../../../assets/json1');
-                    files.add(jsondata);
-                    Map<String, List<List<SentencePart>>> mistakes =
-                        await Analyzer.getMistakes(files);
-                    // mocked ending
 
-                    Analyzer.reportData.addAll(mistakes);
+                    // // mocked beginning
+                    // List<dynamic> files = [];
+                    // final jsondata = await rootBundle.rootBundle
+                    //     .loadString('../../../assets/json1');
+                    // files.add(jsondata);
+                    // Map<String, List<List<SentencePart>>> mistakes =
+                    //     await Analyzer.getMistakes(files);
+                    // // mocked ending
+                    //
+                    // Analyzer.reportData.addAll(mistakes);
+                    Analyzer.reportData["textForAnalysis"] = [
+                      [SentencePart(textFromTextField, "desc"), SentencePart(" text", null), SentencePart("text", "desc")], [], []
+                    ];
                     Navigator.push(navigatorKey.currentContext!,
                         MaterialPageRoute(builder: (context) {
                       return const MainMainPageForAnalysisInputTextWidget();
@@ -311,7 +312,8 @@ class _IntroWidgetState extends State<IntroWidget> {
                 primary: const Color.fromRGBO(134, 73, 33, 1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
