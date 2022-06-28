@@ -2,6 +2,7 @@ name: our-pipeline
 on:
   push:
     branches:
+      - main
       - develop
       - test
   pull_request:

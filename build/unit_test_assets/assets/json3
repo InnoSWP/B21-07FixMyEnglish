@@ -1,0 +1,314 @@
+[
+  {
+    "match": "n't",
+    "sentence": "Lastly, students like to ask questions right away, and they don't mind if their colleagues answered the questions instead of the teacher.",
+    "label": "SPOKN1",
+    "description": "Using contractions"
+  },
+  {
+    "match": "like",
+    "sentence": "Needless to say, most universities have changed their teaching to be more like a wide angle to enhance online education.",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "good",
+    "sentence": "Second, how can we validate if we are doing a good job with online education?",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "best",
+    "sentence": "where the goal of single choice questions is, to make sure what teaching styles best suit students besides what tools they prefer to use in an online learning context.",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "very",
+    "sentence": "Vlog is very much well received by the students *",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "best",
+    "sentence": "What will be the best quality and duration?",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "Also",
+    "sentence": "Also, showing the Instructor's face is preferable to students although it can introduce some kind of distraction.",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "like",
+    "sentence": "Lastly, students like to ask questions right away, and they don't mind if their colleagues answered the questions instead of the teacher.",
+    "label": "VOCAB5",
+    "description": "using a forbidden words"
+  },
+  {
+    "match": "for software",
+    "sentence": "the results are particularly interesting for software development since they resemble a lot of lean approaches to software development [2].",
+    "label": "WORDNES3",
+    "description": "Describing purpose through the use of for + noun or for + gerund"
+  },
+  {
+    "match": "for instance",
+    "sentence": "for instance, using a digital pen and drafting on screen.",
+    "label": "WORDNES3",
+    "description": "Describing purpose through the use of for + noun or for + gerund"
+  },
+  {
+    "match": "for students",
+    "sentence": "* Allowing questions for students affects other students positively.",
+    "label": "WORDNES3",
+    "description": "Describing purpose through the use of for + noun or for + gerund"
+  },
+  {
+    "match": "for students",
+    "sentence": "Lastly, Youtube chapters have shown great attention for students and they found that dividing the videos into sections helps a lot, especially during homework.",
+    "label": "WORDNES3",
+    "description": "Describing purpose through the use of for + noun or for + gerund"
+  },
+  {
+    "match": "we",
+    "sentence": "What have we learned from Covid-19 Muwaffaq Imam Innopolis University, May 2021",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Thus, taking advantage of this collected data to enhance education either by bringing some of the new methods we learned from online education to the on-site learning, or keep using it in the online learning if needed.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Our hypothesis was First, how can we enhance online education?",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Second, how can we validate if we are doing a good job with online education?",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Second, how can we validate if we are doing a good job with online education?",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "To answer our research questions first we decided to collect data through a survey form.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "That being the case, first, we looked at previous research done in this area.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Second, we formulated the questions and distributed them among students.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "Third, we analyzed the data and came up with a set of lessons learned on how to improve our online education and the tools that the faculty uses.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "We",
+    "sentence": "We have got 115 respondents.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "The Result of Videos enhancement category answers questions such as how can we enhance our educational videos?",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "we",
+    "sentence": "To sum up, we should mention that the data was collected anonymously and with the permission of the department of education of the university.",
+    "label": "PRONOUN4",
+    "description": "Using pronoun incorrectly"
+  },
+  {
+    "match": "2021 At",
+    "sentence": "What have we learned from Covid-19 Muwaffaq Imam Innopolis University, May 2021",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "2",
+    "sentence": "Therefore, teachers started to use online technologies to provide educational material to students for almost 2 years.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2 years",
+    "sentence": "Therefore, teachers started to use online technologies to provide educational material to students for almost 2 years.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "1",
+    "sentence": "[1].",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2",
+    "sentence": "the results are particularly interesting for software development since they resemble a lot of lean approaches to software development [2].",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "Second,",
+    "sentence": "Second, how can we validate if we are doing a good job with online education?",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "Third,",
+    "sentence": "Third, How effective is the use of our tools towards the education of the students?",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "Second,",
+    "sentence": "Second, we formulated the questions and distributed them among students.",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "Third,",
+    "sentence": "Third, we analyzed the data and came up with a set of lessons learned on how to improve our online education and the tools that the faculty uses.",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "3",
+    "sentence": "Primarily, The research question was formulated with contrasting not on establishing the optimal faculty but keeping in mind the students feeling as well [3].",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "4",
+    "sentence": "[4].",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "First,",
+    "sentence": "First, is the Multichoice questions demonstrated in Figure 1.",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "1",
+    "sentence": "First, is the Multichoice questions demonstrated in Figure 1.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "1.",
+    "sentence": "First, is the Multichoice questions demonstrated in Figure 1.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "Second,",
+    "sentence": "Second, single choice questions are demonstrated in Figure 2.",
+    "label": "DIGIT8",
+    "description": "Starting a sentence with a digit."
+  },
+  {
+    "match": "2",
+    "sentence": "Second, single choice questions are demonstrated in Figure 2.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2.",
+    "sentence": "Second, single choice questions are demonstrated in Figure 2.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "10",
+    "sentence": "* Video duration should be from 10 to 15 minutes.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "10 to",
+    "sentence": "* Video duration should be from 10 to 15 minutes.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "1",
+    "sentence": "Figure 1 - Multi choice questions",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "1 -",
+    "sentence": "Figure 1 - Multi choice questions",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2",
+    "sentence": "Figure 2 - Single choice questions References [1]   M. J. Phipps, R., “What’s the difference?a review of contemporary research the effectiveness of distance learning in higher education,” Washington, DC: Institute forHigher Education Policy, 1990 [2] G. Marino and G. Succi, “Data Structures for Parallel Execution of Functional Languages,” in Proceedings of the Parallel Architectures and Languages Europe, Volume II: Parallel Languages, ser. PARLE ’89.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2 -",
+    "sentence": "Figure 2 - Single choice questions References [1]   M. J. Phipps, R., “What’s the difference?a review of contemporary research the effectiveness of distance learning in higher education,” Washington, DC: Institute forHigher Education Policy, 1990 [2] G. Marino and G. Succi, “Data Structures for Parallel Execution of Functional Languages,” in Proceedings of the Parallel Architectures and Languages Europe, Volume II: Parallel Languages, ser. PARLE ’89.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "1",
+    "sentence": "Figure 2 - Single choice questions References [1]   M. J. Phipps, R., “What’s the difference?a review of contemporary research the effectiveness of distance learning in higher education,” Washington, DC: Institute forHigher Education Policy, 1990 [2] G. Marino and G. Succi, “Data Structures for Parallel Execution of Functional Languages,” in Proceedings of the Parallel Architectures and Languages Europe, Volume II: Parallel Languages, ser. PARLE ’89.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "2",
+    "sentence": "Figure 2 - Single choice questions References [1]   M. J. Phipps, R., “What’s the difference?a review of contemporary research the effectiveness of distance learning in higher education,” Washington, DC: Institute forHigher Education Policy, 1990 [2] G. Marino and G. Succi, “Data Structures for Parallel Execution of Functional Languages,” in Proceedings of the Parallel Architectures and Languages Europe, Volume II: Parallel Languages, ser. PARLE ’89.",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "3",
+    "sentence": "[3] J. R. Young, “Using social media technologies to enhance online learning,” Mary- land colleges train professors to teach online,",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "4",
+    "sentence": "[4] D. H. Pink, “Managing humour,” Journal of Management Studies, pp. 269– 288, 2006",
+    "label": "DIGIT8",
+    "description": "Using digits for numbers below 11"
+  },
+  {
+    "match": "",
+    "sentence": "Figure 2 - Single choice questions References [1]   M. J. Phipps, R., “What’s the difference?a review of contemporary research the effectiveness of distance learning in higher education,” Washington, DC: Institute forHigher Education Policy, 1990 [2] G. Marino and G. Succi, “Data Structures for Parallel Execution of Functional Languages,” in Proceedings of the Parallel Architectures and Languages Europe, Volume II: Parallel Languages, ser. PARLE ’89.",
+    "label": "WORDNES3",
+    "description": "A very long sentence having over 2 clauses and being over 3 lines long"
+  }
+]
