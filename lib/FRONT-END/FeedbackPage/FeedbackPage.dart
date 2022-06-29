@@ -1,26 +1,30 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
-import 'package:web1_app/BACK-END/PDFfileClass.dart';
+
 import 'package:web1_app/FRONT-END/MainPageForAnalysisInputText/TooltipSpan.dart';
 
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../main.dart';
 
 class FeedbackPage extends StatefulWidget {
   int indexOfSentenceInPDFFile;
   String PDFname;
   List<TooltipSpan> TextSpans;
+  Boolean submitted;
+  Boolean closed;
 
   FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile,
-      this.PDFname,
+      this.PDFname, this.submitted, this.closed,
       {Key? key})
       : super(key: key);
 
   @override
-  State<FeedbackPage> createState() =>
-      _FeedbackPageState(TextSpans, indexOfSentenceInPDFFile, PDFname);
+  State<FeedbackPage> createState() => _FeedbackPageState(
+      TextSpans, indexOfSentenceInPDFFile, PDFname, submitted, closed);
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
@@ -31,8 +35,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
   int indexOfSentenceInPDFFile;
   String PDFname;
 
-  _FeedbackPageState(
-      this.textSpans, this.indexOfSentenceInPDFFile, this.PDFname);
+  Boolean submitted;
+  Boolean closed;
+  _FeedbackPageState(this.textSpans, this.indexOfSentenceInPDFFile,
+      this.PDFname, this.submitted, this.closed);
 
   @override
   void dispose() {
@@ -144,8 +150,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 } catch (e) {
                   print(e);
                 }
-
-
+                submitted.value = true;
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
@@ -266,6 +271,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               color: Colors.white.withOpacity(0.0),
               child: InkWell(
                   onTap: () {
+                    closed.value = true;
                     Navigator.pop(context);
                   },
                   child: const Icon(

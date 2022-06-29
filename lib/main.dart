@@ -19,4 +19,9 @@ class MyApp extends StatelessWidget {
     return const IntroWidget();
   }
 }
+class Boolean {
+  bool value;
+
+  Boolean(this.value);
+}
 

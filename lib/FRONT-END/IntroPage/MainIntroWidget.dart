@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'IntroAppBarWidget.dart';
 import '../MainPageForAnalysisInputText/MainMainPageForAnalysisInputTextWidget.dart';
@@ -38,6 +38,7 @@ class _IntroWidgetState extends State<IntroWidget> {
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         title: "Fix my English",
+        builder: EasyLoading.init(),
         home: Scaffold(
           appBar: const IntroAppBarWidget(),
           body: Container(
@@ -154,28 +155,22 @@ class _IntroWidgetState extends State<IntroWidget> {
                 onPressed: () async {
                   String textFromTextField = controllerOfTextForAnalysis.text;
                   if (textFromTextField != '') {
+                    EasyLoading.show(status: 'loading...');
                     List<PDFfile>? files = [];
-                    // files.add(PDFfile('textForAnalysis', textFromTextField));
+                    files.add(PDFfile('textForAnalysis', textFromTextField));
 
                     Map<String, List<List<SentencePart>>>?
-                        mistakes; // = await Analyzer.getMistakes(files);
+                        mistakes = await Analyzer.getMistakes(files);
                     if (mistakes == null) {
                       List<dynamic> files = [];
                       final jsondata = await rootBundle.rootBundle
                           .loadString('../../../assets/json1');
                       files.add(jsondata);
                       mistakes = await Analyzer.getMistakes_mocked(files, false);
-                      Analyzer.reportData["textForAnalysis"] = [
-                        [
-                          SentencePart(textFromTextField + " ", null, ""),
-                          SentencePart("text ", "desc", "")
-                        ],
-                        [
-                          SentencePart("text ", "desc", ""),
-                          SentencePart(textFromTextField, null, "")
-                        ]
-                      ];
+
+                      Analyzer.reportData.addAll(mistakes);
                       controllerOfTextForAnalysis.text = "";
+                      EasyLoading.dismiss();
                       Navigator.push(navigatorKey.currentContext!,
                           MaterialPageRoute(builder: (context) {
                         return MainMainPageForAnalysisInputTextWidget();
@@ -278,8 +273,10 @@ class _IntroWidgetState extends State<IntroWidget> {
               onPressed: () async {
                 List<PDFfile>? files =
                     PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
+                EasyLoading.show(status: 'loading...');
                 if (files == null) {
                   print("Problem: no files chosen!");
+                  EasyLoading.dismiss();
                 }
                 Map<String, List<List<SentencePart>>>? mistakes =
                     await Analyzer.getMistakes(files!);
@@ -304,7 +301,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                     print(elem.text);
                   });
                 });
-
+                EasyLoading.dismiss();
                 Navigator.push(navigatorKey.currentContext!,
                     MaterialPageRoute(builder: (context) {
                   return const MainMainPageForAnalysisPDFsWidget();

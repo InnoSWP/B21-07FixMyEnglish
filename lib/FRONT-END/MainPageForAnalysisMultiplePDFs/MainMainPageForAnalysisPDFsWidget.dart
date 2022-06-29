@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import 'package:web1_app/BACK-END/Exporting/ExportAllFiles.dart';
 import 'package:web1_app/BACK-END/Exporting/ExportFile.dart';
+import 'package:web1_app/main.dart';
 import '../../BACK-END/AnalyzePDF/UploadPDF.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
@@ -41,6 +44,9 @@ class _MainMainPageForAnalysisPDFsWidget
     extends State<MainMainPageForAnalysisPDFsWidget> {
   List<List<SentencePart>>? mistakenSentenceList;
   int indexOfSelectedPDF = 0;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  Boolean isReportSubmitted = new Boolean(false);
+  Boolean isReportFormClosed = new Boolean(false);
 
   @override
   void initState() {
@@ -62,6 +68,7 @@ class _MainMainPageForAnalysisPDFsWidget
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: scaffoldKey,
         appBar: MainAppBarWidget(context),
         body: Container(
             child: Row(
@@ -145,17 +152,25 @@ class _MainMainPageForAnalysisPDFsWidget
                     child: Material(
                         color: Colors.white.withOpacity(0.0),
                         child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
+                            onTap: () async {
+                              await Navigator.of(context).push(
                                 PageRouteBuilder(
                                   opaque: false, // set to false
                                   pageBuilder: (_, __, ___) => FeedbackPage(
                                       convertTextToTextSpans(text),
                                       index,
-                                      Analyzer.reportData.keys
-                                          .elementAt(indexOfSelectedPDF)),
+                                      "textForAnalysis", isReportSubmitted, isReportFormClosed),
                                 ),
                               );
+                              EasyLoading.show(status: "loading...");
+                              while(!isReportFormClosed.value && !isReportSubmitted.value) {
+                                await new Future.delayed(new Duration(milliseconds: 500));
+                              }
+                              EasyLoading.dismiss();
+                              const snackBar = SnackBar(
+                                content: Text('Thanks for reporting! You answer saved!'),
+                              );
+                              if(!isReportFormClosed.value) scaffoldKey.currentState!.showSnackBar(snackBar);
                             },
                             child: Icon(
                               Icons.warning_rounded,
@@ -304,8 +319,7 @@ class _MainMainPageForAnalysisPDFsWidget
               alignment: Alignment.topRight,
               child: InkWell(
                 onTap: () async {
-                  bool approval = await dialogForClearAllButton();
-                  print(approval);
+                  bool approval = await dialogForAcception("This will remove all your files.");
                   if (approval)
                     setState(() {
                       mistakenSentenceList = null;
@@ -325,24 +339,24 @@ class _MainMainPageForAnalysisPDFsWidget
         : SizedBox.shrink();
   }
 
-  Future<bool> dialogForClearAllButton() async {
+  Future<bool> dialogForAcception(String bodyText) async {
     bool toRet = false;
     Dialog dialog = Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       //this right here
       child: Container(
-        height: 160.0,
-        width: 200.0,
+        height: 230.0,
+        width: 230.0,
         decoration: const BoxDecoration(
           color: Color(0xFFF2EEE1),
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Center(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
+                padding: EdgeInsets.only(bottom: 8.0, top: 15),
                 child: Text(
                   'Are you sure?',
                   style: TextStyle(
@@ -352,15 +366,25 @@ class _MainMainPageForAnalysisPDFsWidget
             ),
             Center(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 8.0, left: 20, right: 20),
-                child: Text(
-                  'This will remove all your files.',
-                  style: TextStyle(fontFamily: 'Eczar', color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w100),
+                padding: EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFBFDF7),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  height: 100, //0xFFFBFDF7),
+                  padding: EdgeInsets.all(12),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      bodyText,
+                      style: TextStyle(height: 1.4, fontFamily: 'Eczar', color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w100),
+                    ),
+                  ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 30.0, bottom: 20),
+              padding: const EdgeInsets.only(left: 30.0, bottom: 0),
               child: Row(
                 children: [
                   Padding(
@@ -535,8 +559,9 @@ class _MainMainPageForAnalysisPDFsWidget
                             color: Colors.white.withOpacity(0.0),
                             child: InkWell(
                                 key: Key("delete button ${PDFName}"),
-                                onTap: () {
-                                  setState(() {
+                                onTap: () async {
+                                  bool approval = await dialogForAcception("This will remove ${PDFName} file.");
+                                  if(approval) setState(() {
                                     Analyzer.reportData.remove(PDFName);
                                     if (selected) {
                                       indexOfSelectedPDF = -1;
@@ -580,8 +605,10 @@ class _MainMainPageForAnalysisPDFsWidget
                 onPressed: () async {
                   List<PDFfile>? files =
                       PdfAPI.getFilesTexts(await PdfAPI.selectFiles());
+                  EasyLoading.show(status: "loading...");
                   if (files == null) {
                     print("Problem: no files chosen!");
+                    EasyLoading.dismiss();
                   }
                   Map<String, List<List<SentencePart>>>? mistakes =
                       await Analyzer.getMistakes(files!);
@@ -596,6 +623,7 @@ class _MainMainPageForAnalysisPDFsWidget
                   setState(() {
                     Analyzer.reportData.addAll(mistakes!);
                   });
+                  EasyLoading.dismiss();
                 },
                 style: ElevatedButton.styleFrom(
                   primary: const Color(0xFF4D6658),

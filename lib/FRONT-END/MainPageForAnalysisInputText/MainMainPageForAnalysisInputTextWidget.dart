@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:web1_app/main.dart';
 import '../../BACK-END/Exporting/ExportFile.dart';
 import '../../BACK-END/PDFfileClass.dart';
 import '../FeedbackPage/FeedbackPage.dart';
@@ -21,6 +23,9 @@ class _MainMainPageForAnalysisInputTextWidget
     extends State<MainMainPageForAnalysisInputTextWidget> {
   List<List<SentencePart>>? mistakenSentenceList;
   final controllerOfTextForAnalysis = TextEditingController();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  Boolean isReportSubmitted = new Boolean(false);
+  Boolean isReportFormClosed = new Boolean(false);
 
   @override
   void dispose() {
@@ -48,11 +53,11 @@ class _MainMainPageForAnalysisInputTextWidget
 
   @override
   Widget build(BuildContext context) {
-    // Figma Flutter Generator IntroPage - FRAME
     return MaterialApp(
       title: "Fix my English",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: scaffoldKey,
         appBar: MainAppBarWidget(context),
         body: Container(
             child: Row(
@@ -81,15 +86,18 @@ class _MainMainPageForAnalysisInputTextWidget
     return Expanded(
       child: mistakenSentenceList != null
           ? ListView.builder(
-          itemCount: mistakenSentenceList?.length,
-          itemBuilder: (BuildContext context, int index) {
-            Widget? x = MistakenSentenceElement(
-                mistakenSentenceList![index], index);
-            return x != null && mistakenSentenceList![index].isNotEmpty ? x : SizedBox.shrink();
-          })
+              itemCount: mistakenSentenceList?.length,
+              itemBuilder: (BuildContext context, int index) {
+                Widget? x = MistakenSentenceElement(
+                    mistakenSentenceList![index], index);
+                return x != null && mistakenSentenceList![index].isNotEmpty
+                    ? x
+                    : SizedBox.shrink();
+              })
           : Text("Please, input text and click on button \"Analyze text\""),
     );
   }
+
   Widget? MistakenSentenceElement(text, index) {
     if (prepareForCopying(text) == "") {
       return null;
@@ -127,24 +135,40 @@ class _MainMainPageForAnalysisInputTextWidget
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0, right: 10),
                     child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => FeedbackPage(
-                                      convertTextToTextSpans(text),
-                                      index,
-                                      "textForAnalysis"),
-                                ),
-                              );
-                            },
-                            child: Icon(
-                              Icons.warning_rounded,
-                              color: Color(0xDD864921),
-                              size: 32,
-                            ))),
+                      color: Colors.white.withOpacity(0.0),
+                      child: InkWell(
+                          onTap: () async {
+                            await Navigator.of(context).push(
+                              PageRouteBuilder(
+                                opaque: false, // set to false
+                                pageBuilder: (_, __, ___) => FeedbackPage(
+                                    convertTextToTextSpans(text),
+                                    index,
+                                    "textForAnalysis",
+                                    isReportSubmitted,
+                                    isReportFormClosed),
+                              ),
+                            );
+                            EasyLoading.show(status: "loading...");
+                            while (!isReportFormClosed.value &&
+                                !isReportSubmitted.value) {
+                              await new Future.delayed(
+                                  new Duration(milliseconds: 500));
+                            }
+                            EasyLoading.dismiss();
+                            const snackBar = SnackBar(
+                              content: Text(
+                                  'Thanks for reporting! You answer saved!'),
+                            );
+                            if (!isReportFormClosed.value)
+                              scaffoldKey.currentState!.showSnackBar(snackBar);
+                          },
+                          child: Icon(
+                            Icons.warning_rounded,
+                            color: Color(0xDD864921),
+                            size: 32,
+                          )),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
@@ -156,7 +180,7 @@ class _MainMainPageForAnalysisInputTextWidget
                       decoration: BoxDecoration(
                         color: Color(0xFF49454F),
                         borderRadius:
-                        const BorderRadius.all(Radius.circular(5)),
+                            const BorderRadius.all(Radius.circular(5)),
                       ),
                       textStyle: TextStyle(color: Colors.white),
                       preferBelow: true,
@@ -313,21 +337,24 @@ class _MainMainPageForAnalysisInputTextWidget
               onPressed: () async {
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
+                  EasyLoading.show(status: "loading...");
                   List<PDFfile>? files = [];
                   files.add(PDFfile('textForAnalysis', textFromTextField));
                   Map<String, List<List<SentencePart>>>? mistakes =
                       await Analyzer.getMistakes(files);
-                  if(mistakes == null) {
-                    List <dynamic> files = [];
-                    final jsondata = await rootBundle.rootBundle.loadString(
-                        '../../../assets/json1');
+                  if (mistakes == null) {
+                    List<dynamic> files = [];
+                    final jsondata = await rootBundle.rootBundle
+                        .loadString('../../../assets/json1');
                     files.add(jsondata);
                     mistakes = await Analyzer.getMistakes_mocked(files, false);
                   }
                   Analyzer.reportData.addAll(mistakes);
                   setState(() {
-                      mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
+                    mistakenSentenceList =
+                        Analyzer.reportData["textForAnalysis"];
                   });
+                  EasyLoading.dismiss();
                 }
               },
               style: ElevatedButton.styleFrom(
