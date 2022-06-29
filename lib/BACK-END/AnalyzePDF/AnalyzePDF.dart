@@ -55,7 +55,7 @@ class Analyzer{
 
 
   //mocked function if cant connect to API
-  static Future<Map<String, List<List<SentencePart>>>> getMistakes_mocked(List<dynamic> files) async{
+  static Future<Map<String, List<List<SentencePart>>>> getMistakes_mocked(List<dynamic> files, bool pdf) async{
     Map<String, List<List<SentencePart>>> tmp = <String, List<List<SentencePart>>>{};
     int num = 0;
     for (dynamic file in files){
@@ -66,7 +66,10 @@ class Analyzer{
       for (Mistake m in fileMistakes.mistakes){
         value.add(__getSentence(m.sentence, m.wrong_phrase, m.description, m.label));
       }
-      tmp["12345678901234567890 FIle${num}.pdf"] = value;
+      if(pdf)
+        tmp["12345678901234567890 FIle${num}.pdf"] = value;
+      else
+        tmp["textForAnalysis"] = value;
       num ++;
     }
     return tmp;

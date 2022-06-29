@@ -114,6 +114,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: ElevatedButton(
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
+                Navigator.pop(context);
                 try {
                   final CollectionReference reports =
                       FirebaseFirestore.instance.collection("reports");
@@ -144,7 +145,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   print(e);
                 }
 
-                Navigator.pop(context);
+
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),

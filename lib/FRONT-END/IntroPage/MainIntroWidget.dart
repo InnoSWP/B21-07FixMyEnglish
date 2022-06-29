@@ -164,7 +164,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                       final jsondata = await rootBundle.rootBundle
                           .loadString('../../../assets/json1');
                       files.add(jsondata);
-                      mistakes = await Analyzer.getMistakes_mocked(files);
+                      mistakes = await Analyzer.getMistakes_mocked(files, false);
                       Analyzer.reportData["textForAnalysis"] = [
                         [
                           SentencePart(textFromTextField + " ", null, ""),
@@ -181,17 +181,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                         return MainMainPageForAnalysisInputTextWidget();
                       }));
                     }
-
-                    // // mocked beginning
-                    // List<dynamic> files = [];
-                    // final jsondata = await rootBundle.rootBundle
-                    //     .loadString('../../../assets/json1');
-                    // files.add(jsondata);
-                    // Map<String, List<List<SentencePart>>> mistakes =
-                    //     await Analyzer.getMistakes(files);
-                    // // mocked ending
-                    //
-                    // Analyzer.reportData.addAll(mistakes);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -306,7 +295,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                   final jsondata2 = await rootBundle.rootBundle
                       .loadString('../../../assets/json3');
                   files.add(jsondata2);
-                  mistakes = await Analyzer.getMistakes_mocked(files);
+                  mistakes = await Analyzer.getMistakes_mocked(files, true);
                 }
 
                 Analyzer.reportData.addAll(mistakes);

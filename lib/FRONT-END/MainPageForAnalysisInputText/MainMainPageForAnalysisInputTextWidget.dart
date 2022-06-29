@@ -311,7 +311,6 @@ class _MainMainPageForAnalysisInputTextWidget
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {
-                bool success = true;
                 String textFromTextField = controllerOfTextForAnalysis.text;
                 if (textFromTextField != '') {
                   List<PDFfile>? files = [];
@@ -319,19 +318,15 @@ class _MainMainPageForAnalysisInputTextWidget
                   Map<String, List<List<SentencePart>>>? mistakes =
                       await Analyzer.getMistakes(files);
                   if(mistakes == null) {
-                    success = false;
                     List <dynamic> files = [];
                     final jsondata = await rootBundle.rootBundle.loadString(
                         '../../../assets/json1');
                     files.add(jsondata);
-                    mistakes = await Analyzer.getMistakes_mocked(files);
+                    mistakes = await Analyzer.getMistakes_mocked(files, false);
                   }
                   Analyzer.reportData.addAll(mistakes);
                   setState(() {
-                    if (success)
                       mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
-                    else
-                      mistakenSentenceList = Analyzer.reportData["12345678901234567890 FIle0.pdf"];
                   });
                 }
               },

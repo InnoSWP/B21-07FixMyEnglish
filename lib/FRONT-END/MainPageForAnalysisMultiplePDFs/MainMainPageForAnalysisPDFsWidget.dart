@@ -590,7 +590,7 @@ class _MainMainPageForAnalysisPDFsWidget
                     final jsondata = await rootBundle.rootBundle
                         .loadString('../../../assets/json1');
                     files_mocked.add(jsondata);
-                    mistakes = await Analyzer.getMistakes_mocked(files_mocked);
+                    mistakes = await Analyzer.getMistakes_mocked(files_mocked, true);
                   }
 
                   setState(() {

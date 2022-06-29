@@ -34,19 +34,15 @@
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '2110268664';
+    var serviceWorkerVersion = '759026854';
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
 <body>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCU0by9CaHRmD-A12cde3cwhLLc1huwwms",
     authDomain: "bs-07fixmyenglish.firebaseapp.com",
@@ -56,8 +52,7 @@
     appId: "1:1005894662940:web:b8b08ccc0e62dbd25998d9"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 </script>
   <script>
     window.addEventListener('load', function(ev) {
