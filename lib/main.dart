@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const IntroWidget();
+    return const Intro();
   }
 }
 class Boolean {

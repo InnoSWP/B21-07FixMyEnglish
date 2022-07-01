@@ -165,7 +165,7 @@ class _MainMainPageForAnalysisInputTextWidget
                           },
                           child: Icon(
                             Icons.warning_rounded,
-                            color: Color(0xDD864921),
+                            color: Color(0xFFAA6D43),
                             size: 32,
                           )),
                     ),

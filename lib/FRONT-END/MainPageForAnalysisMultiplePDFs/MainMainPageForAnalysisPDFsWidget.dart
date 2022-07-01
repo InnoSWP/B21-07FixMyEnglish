@@ -89,19 +89,70 @@ class _MainMainPageForAnalysisPDFsWidget
                 "report part ${Analyzer.reportData.keys.elementAt(indexOfSelectedPDF)}"),
         child: Column(
           children: [
-            Container(
-              height: 65,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(top: 10, left: 55),
+                child: Container(
+                  child: Text("Mistaken Sentences",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        height: 1.5,
+                        fontSize: 27,
+                        fontFamily: 'Eczar',
+                        color: Color.fromRGBO(134, 73, 33, 1),
+                      )),
+                ),
+              ),
             ),
             MistakenSentenceList(),
-            ExportButton()
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Container(
+                  color: Color(0xAAF2EEE1),
+                  child: Row(
+                    children: [
+                      Expanded(child: MistakeDescriptionField()),
+                      Spacer(),
+                      ExportButton(),
+                    ],
+                  )),
+            )
           ],
         ));
+  }
+
+  Widget MistakeDescriptionField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
+      child: Container(
+          height: 70,
+          width: 250,
+          decoration: const BoxDecoration(
+            color: Color(0xFFFFFFFF),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              scrollDirection: Axis.vertical,
+              child: Text(
+                "addddddddddddddddddddddasdfasdfasdgasdgsdgasdgsadgasdgasdgsadgasdgasdghdfghgfdsrdesdddddddddddddddddd\nb\nc\nd\nf\ngasg\n",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          )),
+    );
   }
 
   Widget MistakenSentenceList() {
     return Expanded(
       child: mistakenSentenceList != null
           ? ListView.builder(
+              controller: ScrollController(),
               itemCount: mistakenSentenceList?.length,
               itemBuilder: (BuildContext context, int index) {
                 Widget? x = MistakenSentenceElement(
@@ -130,8 +181,8 @@ class _MainMainPageForAnalysisPDFsWidget
           // ],
           borderRadius: BorderRadius.all(Radius.circular(23)),
         ),
-        margin: const EdgeInsets.only(top: 15, right: 55, left: 55),
-        padding: const EdgeInsets.only(top: 25, right: 35, left: 35, bottom: 3),
+        margin: const EdgeInsets.only(right: 55, left: 55, bottom: 15),
+        padding: const EdgeInsets.only(top: 25, right: 25, left: 25, bottom: 3),
         child: Column(
           children: [
             Align(
@@ -148,42 +199,60 @@ class _MainMainPageForAnalysisPDFsWidget
               child: FittedBox(
                 child: Row(children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 13.0, right: 10),
-                    child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                            onTap: () async {
-                              await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => FeedbackPage(
-                                      convertTextToTextSpans(text),
-                                      index,
-                                      "textForAnalysis", isReportSubmitted, isReportFormClosed),
-                                ),
-                              );
-                              EasyLoading.show(status: "loading...");
-                              while(!isReportFormClosed.value && !isReportSubmitted.value) {
-                                await new Future.delayed(new Duration(milliseconds: 500));
-                              }
-                              EasyLoading.dismiss();
-                              const snackBar = SnackBar(
-                                content: Text('Thanks for reporting! You answer saved!'),
-                              );
-                              if(!isReportFormClosed.value) scaffoldKey.currentState!.showSnackBar(snackBar);
-                            },
-                            child: Icon(
-                              Icons.warning_rounded,
-                              color: Color(0xDD864921),
-                              size: 32,
-                            ))),
+                    padding: const EdgeInsets.only(top: 13.0, right: 13),
+                    child: Tooltip(
+                      message: "Open report form with this sentence",
+                      padding: EdgeInsets.all(6),
+                      showDuration: Duration(seconds: 0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF49454F),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      textStyle: TextStyle(color: Colors.white),
+                      preferBelow: true,
+                      child: Material(
+                          color: Colors.white.withOpacity(0.0),
+                          child: InkWell(
+                              onTap: () async {
+                                await Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    opaque: false, // set to false
+                                    pageBuilder: (_, __, ___) => FeedbackPage(
+                                        convertTextToTextSpans(text),
+                                        index,
+                                        "textForAnalysis",
+                                        isReportSubmitted,
+                                        isReportFormClosed),
+                                  ),
+                                );
+                                EasyLoading.show(status: "loading...");
+                                while (!isReportFormClosed.value &&
+                                    !isReportSubmitted.value) {
+                                  await new Future.delayed(
+                                      new Duration(milliseconds: 500));
+                                }
+                                EasyLoading.dismiss();
+                                const snackBar = SnackBar(
+                                  content: Text(
+                                      'Thanks for reporting! You answer saved!'),
+                                );
+                                if (!isReportFormClosed.value)
+                                  scaffoldKey.currentState!
+                                      .showSnackBar(snackBar);
+                              },
+                              child: Icon(
+                                Icons.warning_rounded,
+                                color: Color(0xFFAA6D43),
+                                size: 32,
+                              ))),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
                     child: Tooltip(
                       message: "Copy",
                       padding: EdgeInsets.all(6),
-                      margin: EdgeInsets.all(10),
                       showDuration: Duration(seconds: 0),
                       decoration: BoxDecoration(
                         color: Color(0xFF49454F),
@@ -319,7 +388,8 @@ class _MainMainPageForAnalysisPDFsWidget
               alignment: Alignment.topRight,
               child: InkWell(
                 onTap: () async {
-                  bool approval = await dialogForAcception("This will remove all your files.");
+                  bool approval = await dialogForAcception(
+                      "This will remove all your files.");
                   if (approval)
                     setState(() {
                       mistakenSentenceList = null;
@@ -360,7 +430,10 @@ class _MainMainPageForAnalysisPDFsWidget
                 child: Text(
                   'Are you sure?',
                   style: TextStyle(
-                      fontFamily: 'Eczar', color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500),
+                      fontFamily: 'Eczar',
+                      color: Colors.black,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500),
                 ),
               ),
             ),
@@ -377,7 +450,12 @@ class _MainMainPageForAnalysisPDFsWidget
                   child: SingleChildScrollView(
                     child: Text(
                       bodyText,
-                      style: TextStyle(height: 1.4, fontFamily: 'Eczar', color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w100),
+                      style: TextStyle(
+                          height: 1.4,
+                          fontFamily: 'Eczar',
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w100),
                     ),
                   ),
                 ),
@@ -400,7 +478,7 @@ class _MainMainPageForAnalysisPDFsWidget
                               fontFamily: 'Eczar',
                               fontSize: 18.0,
                               color: Color(0xFF4D6658),
-                          fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400),
                         )),
                   ),
                   TextButton(
@@ -474,6 +552,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Expanded(
         child: Container(
       child: ListView.builder(
+          controller: ScrollController(),
           itemCount: Analyzer.reportData.length,
           itemBuilder: (BuildContext context, int index) => Visibility(
               visible: Analyzer.reportData.keys.elementAt(index) !=
@@ -560,14 +639,16 @@ class _MainMainPageForAnalysisPDFsWidget
                             child: InkWell(
                                 key: Key("delete button ${PDFName}"),
                                 onTap: () async {
-                                  bool approval = await dialogForAcception("This will remove ${PDFName} file.");
-                                  if(approval) setState(() {
-                                    Analyzer.reportData.remove(PDFName);
-                                    if (selected) {
-                                      indexOfSelectedPDF = -1;
-                                      mistakenSentenceList = null;
-                                    }
-                                  });
+                                  bool approval = await dialogForAcception(
+                                      "This will remove ${PDFName} file.");
+                                  if (approval)
+                                    setState(() {
+                                      Analyzer.reportData.remove(PDFName);
+                                      if (selected) {
+                                        indexOfSelectedPDF = -1;
+                                        mistakenSentenceList = null;
+                                      }
+                                    });
                                 },
                                 child: const Icon(
                                   Icons.clear_rounded,
@@ -600,7 +681,8 @@ class _MainMainPageForAnalysisPDFsWidget
             borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
           child: SizedBox(
-            width: 170,
+            height: 50,
+            width: 314,
             child: ElevatedButton(
                 onPressed: () async {
                   List<PDFfile>? files =
@@ -617,7 +699,8 @@ class _MainMainPageForAnalysisPDFsWidget
                     final jsondata = await rootBundle.rootBundle
                         .loadString('../../../assets/json1');
                     files_mocked.add(jsondata);
-                    mistakes = await Analyzer.getMistakes_mocked(files_mocked, true);
+                    mistakes =
+                        await Analyzer.getMistakes_mocked(files_mocked, true);
                   }
 
                   setState(() {
@@ -630,23 +713,25 @@ class _MainMainPageForAnalysisPDFsWidget
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
                 child: Row(
-                  children: <Widget>[
-                    Spacer(),
-                    Text("Upload  ",
-                        style: TextStyle(
-                          color: Color.fromRGBO(251, 253, 247, 1),
-                          fontFamily: 'Eczar',
-                          fontSize: 25,
-                          fontWeight: FontWeight.w100,
-                        )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
                     Expanded(
-                        child: Icon(
-                      Icons.add_outlined,
-                      size: 32,
+                        child: Center(
+                      child: Text("    Upload",
+                          style: TextStyle(
+                            color: Color.fromRGBO(251, 253, 247, 1),
+                            fontFamily: 'Eczar',
+                            fontSize: 30,
+                            fontWeight: FontWeight.w100,
+                          )),
                     )),
+                    Icon(
+                      Icons.add_outlined,
+                      size: 35,
+                    )
                   ],
                 )),
           ),

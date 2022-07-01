@@ -13,6 +13,20 @@ import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
+class Intro extends StatelessWidget {
+  const Intro({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: "Fix my English",
+        builder: EasyLoading.init(),
+        home: IntroWidget());
+  }
+}
+
 class IntroWidget extends StatefulWidget {
   const IntroWidget({Key? key}) : super(key: key);
 
@@ -22,6 +36,7 @@ class IntroWidget extends StatefulWidget {
 
 class _IntroWidgetState extends State<IntroWidget> {
   final controllerOfTextForAnalysis = TextEditingController();
+  late int maxLines;
 
   @override
   void dispose() {
@@ -33,111 +48,88 @@ class _IntroWidgetState extends State<IntroWidget> {
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator IntroPage - FRAME
+    double h = MediaQuery.of(context).size.height;
+    maxLines = h~/100;
+    return Scaffold(
+      appBar: const IntroAppBarWidget(),
+      body: Container(
+        color: const Color.fromRGBO(251, 253, 247, 1),
+        child: Stack(children: [
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: SvgPicture.asset(
+              "leftsmallwave.svg",
+              height: 180,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: SvgPicture.asset(
+              "leftbigwave.svg",
+              height: 650,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: SvgPicture.asset(
+              "rightwave.svg",
+              height: 600,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          Center(
+            child: FractionallySizedBox(
+              widthFactor: 60 / 100,
+              child: Column(
+                children: [
 
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
-        title: "Fix my English",
-        builder: EasyLoading.init(),
-        home: Scaffold(
-          appBar: const IntroAppBarWidget(),
-          body: Container(
-            color: const Color.fromRGBO(251, 253, 247, 1),
-            child: Stack(children: [
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: SvgPicture.asset(
-                  "leftsmallwave.svg",
-                  height: 193,
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: SvgPicture.asset(
-                  "leftbigwave.svg",
-                  height: 650,
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: SvgPicture.asset(
-                  "rightwave.svg",
-                  height: 600,
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: RichText(
-                      text: const TextSpan(
-                        text: '',
-                        children: [
-                          TextSpan(
-                              text: "powered by ",
-                              style: TextStyle(
-                                color: Color.fromRGBO(77, 102, 88, 1),
-                                height: 1.5,
-                                fontSize: 25,
-                                fontFamily: 'Eczar',
-                              )),
-                          TextSpan(
-                              text: "iExtract",
-                              style: TextStyle(
-                                color: Color.fromRGBO(77, 102, 88, 1),
-                                height: 1.5,
-                                fontSize: 25,
-                                fontFamily: 'Eczar',
-                                fontWeight: FontWeight.w600,
-                              ))
-                        ],
-                      ),
-                    )),
-              ),
-              Center(
-                child: FractionallySizedBox(
-                  widthFactor: 75 / 100,
-                  child: Column(
-                    children: [
-                      AnalysisTextField(),
-                      analyzeTextButton(),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SizedBox(
-                            height: 45,
-                            child: Container(
-                              child: Text(
-                                "or",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(95, 95, 105, 1),
-                                  fontFamily: 'Eczar',
-                                  fontSize: 35,
+                  //Spacer(),
+                  Container(height: h*0.2,),
+                  Center(
+                      child: AnalysisTextField()),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        analyzeTextButton(),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: SizedBox(
+                              height: 45,
+                              child: Container(
+                                child: Text(
+                                  "or",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(95, 95, 105, 1),
+                                    fontFamily: 'Eczar',
+                                    fontSize: 35,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      UploadButton(),
-                    ],
+                        UploadButton(),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ]),
+            ),
           ),
-        ));
+        ]),
+      ),
+    );
   }
 
   Widget analyzeTextButton() {
     return Align(
       alignment: Alignment.topRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 25),
+        padding: const EdgeInsets.only(top: 10),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [
@@ -159,14 +151,15 @@ class _IntroWidgetState extends State<IntroWidget> {
                     List<PDFfile>? files = [];
                     files.add(PDFfile('textForAnalysis', textFromTextField));
 
-                    Map<String, List<List<SentencePart>>>?
-                        mistakes = await Analyzer.getMistakes(files);
+                    Map<String, List<List<SentencePart>>>? mistakes =
+                        await Analyzer.getMistakes(files);
                     if (mistakes == null) {
                       List<dynamic> files = [];
                       final jsondata = await rootBundle.rootBundle
                           .loadString('../../../assets/json1');
                       files.add(jsondata);
-                      mistakes = await Analyzer.getMistakes_mocked(files, false);
+                      mistakes =
+                          await Analyzer.getMistakes_mocked(files, false);
 
                       Analyzer.reportData.addAll(mistakes);
                       controllerOfTextForAnalysis.text = "";
@@ -183,7 +176,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40)),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 ),
                 child: Row(
                   children: <Widget>[
@@ -210,48 +203,46 @@ class _IntroWidgetState extends State<IntroWidget> {
   }
 
   Widget AnalysisTextField() {
-    return Center(
-      child: Container(
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 3,
-                offset: Offset(1, 3),
-                spreadRadius: 1,
-              ),
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(29)),
-          ),
-          margin: const EdgeInsets.only(top: 55),
-          child: TextField(
-              key: const Key("textField"),
-              controller: controllerOfTextForAnalysis,
-              cursorColor: Color.fromRGBO(134, 73, 33, 1),
-              cursorWidth: 2,
-              cursorRadius: Radius.circular(3),
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.only(top: 30, right: 27, left: 27, bottom: 30),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(29)),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
+    return Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 3,
+              offset: Offset(1, 3),
+              spreadRadius: 1,
+            ),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(29)),
+        ),
+        margin: const EdgeInsets.only(top: 0),
+        child: TextField(
+            key: const Key("textField"),
+            controller: controllerOfTextForAnalysis,
+            cursorColor: Color.fromRGBO(134, 73, 33, 1),
+            cursorWidth: 2,
+            cursorRadius: Radius.circular(3),
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.only(top: 30, right: 27, left: 27, bottom: 30),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(29)),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
                 ),
-                hintText: "Input text for analysis",
-                fillColor: Color(0xFFF2EEE1),
-                filled: true,
               ),
-              style: TextStyle(
-                  height: 1.4,
-                  fontFamily: 'Eczar',
-                  fontSize: 23,
-                  color: Colors.black),
-              maxLines: 11,
-              minLines: 11)),
-    );
+              hintText: "Input text for analysis",
+              fillColor: Color(0xFFF2EEE1),
+              filled: true,
+            ),
+            style: TextStyle(
+                height: 1.4,
+                fontFamily: 'Eczar',
+                fontSize: 23,
+                color: Colors.black),
+            maxLines: maxLines,
+            minLines: maxLines));
   }
 
   Widget UploadButton() {
@@ -312,7 +303,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               ),
               child: Row(
                 children: <Widget>[
