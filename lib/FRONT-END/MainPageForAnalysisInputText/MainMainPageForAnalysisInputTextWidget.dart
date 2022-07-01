@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ class _MainMainPageForAnalysisInputTextWidget
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Boolean isReportSubmitted = new Boolean(false);
   Boolean isReportFormClosed = new Boolean(false);
+  String currentMistakeDescription = "";
 
   @override
   void dispose() {
@@ -229,6 +231,7 @@ class _MainMainPageForAnalysisInputTextWidget
           : toRet.add(TooltipSpan(
               message: i.description!,
               inlineSpan: TextSpan(
+
                   text: i.text,
                   style: TextStyle(
                     backgroundColor: Color(0x80DD4A4A),

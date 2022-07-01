@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -47,6 +48,7 @@ class _MainMainPageForAnalysisPDFsWidget
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Boolean isReportSubmitted = new Boolean(false);
   Boolean isReportFormClosed = new Boolean(false);
+  String currentMistakeDescription = "";
 
   @override
   void initState() {
@@ -109,10 +111,11 @@ class _MainMainPageForAnalysisPDFsWidget
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Container(
+                height: 145,
                   color: Color(0xAAF2EEE1),
                   child: Row(
                     children: [
-                      Expanded(child: MistakeDescriptionField()),
+                          MistakeDescriptionField(),
                       Spacer(),
                       ExportButton(),
                     ],
@@ -123,29 +126,51 @@ class _MainMainPageForAnalysisPDFsWidget
   }
 
   Widget MistakeDescriptionField() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
-      child: Container(
-          height: 70,
-          width: 250,
-          decoration: const BoxDecoration(
-            color: Color(0xFFFFFFFF),
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.vertical,
-              child: Text(
-                "addddddddddddddddddddddasdfasdfasdgasdgsdgasdgsadgasdgasdgsadgasdgasdghdfghgfdsrdesdddddddddddddddddd\nb\nc\nd\nf\ngasg\n",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+    return currentMistakeDescription != ""
+        ? Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 5, left: 55),
+            child: Container(
+              width: 600,
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Mistake description",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          height: 1.5,
+                          fontSize: 27,
+                          fontFamily: 'Eczar',
+                          color: Color.fromRGBO(134, 73, 33, 1),
+                        )),
+                  ),
+                  Container(
+                      height: 70,
+                      width: 600,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFFFFFF),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            "${currentMistakeDescription}",
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontFamily: 'Eczar',
+                              height: 1.3
+                            ),
+                          ),
+                        ),
+                      )),
+                ],
               ),
             ),
-          )),
-    );
+          )
+        : SizedBox.shrink();
   }
 
   Widget MistakenSentenceList() {
@@ -304,8 +329,14 @@ class _MainMainPageForAnalysisPDFsWidget
                     fontFamily: 'Eczar',
                   ))))
           : toRet.add(TooltipSpan(
-              message: i.description!,
+              message: "On tap, you can see the mistake description at the bottom of the screen",
               inlineSpan: TextSpan(
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () {
+                      setState(() {
+                        currentMistakeDescription = i.description!;
+                      });
+                    },
                   text: i.text,
                   style: const TextStyle(
                     backgroundColor: Color(0x80DD4A4A),
@@ -321,7 +352,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 20, right: 54),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 0, right: 54),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [
@@ -510,7 +541,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Align(
       alignment: Alignment.topCenter,
       child: Padding(
-        padding: const EdgeInsets.only(top: 25, bottom: 20),
+        padding: const EdgeInsets.only(top: 25, bottom: 30),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [

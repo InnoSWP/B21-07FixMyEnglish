@@ -86,7 +86,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                 children: [
 
                   //Spacer(),
-                  Container(height: h*0.2,),
+                  Container(height: h*0.195,),
                   Center(
                       child: AnalysisTextField()),
                   Expanded(
