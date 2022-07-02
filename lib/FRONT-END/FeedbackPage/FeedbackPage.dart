@@ -1,30 +1,44 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web1_app/BACK-END/AnalyzePDF/SentencePartClass.dart';
-import 'package:web1_app/BACK-END/PDFfileClass.dart';
+
 import 'package:web1_app/FRONT-END/MainPageForAnalysisInputText/TooltipSpan.dart';
 
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
+import '../../main.dart';
 
 class FeedbackPage extends StatefulWidget {
   int indexOfSentenceInPDFFile;
   String PDFname;
   List<TooltipSpan> TextSpans;
-  FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile, this.PDFname, {Key? key}) : super(key: key);
+  Boolean submitted;
+  Boolean closed;
+
+  FeedbackPage(List<TooltipSpan> this.TextSpans, this.indexOfSentenceInPDFFile,
+      this.PDFname, this.submitted, this.closed,
+      {Key? key})
+      : super(key: key);
 
   @override
-  State<FeedbackPage> createState() => _FeedbackPageState(TextSpans, indexOfSentenceInPDFFile, PDFname);
+  State<FeedbackPage> createState() => _FeedbackPageState(
+      TextSpans, indexOfSentenceInPDFFile, PDFname, submitted, closed);
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
   @override
   final controllerOfTextForAnalysis = TextEditingController();
   List<TooltipSpan> textSpans;
+
   int indexOfSentenceInPDFFile;
   String PDFname;
-  _FeedbackPageState(this.textSpans, this.indexOfSentenceInPDFFile, this.PDFname);
+
+  Boolean submitted;
+  Boolean closed;
+  _FeedbackPageState(this.textSpans, this.indexOfSentenceInPDFFile,
+      this.PDFname, this.submitted, this.closed);
 
   @override
   void dispose() {
@@ -71,12 +85,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         style: TextStyle(
                             height: 1.45,
                             fontFamily: 'Eczar',
-                            fontStyle: FontStyle.italic,
                             fontSize: 23,
                             color: Colors.black),
                       )),
                 ),
-                mistakenSentence(),
+                Expanded(flex: 1, child: mistakenSentence()),
                 textFieldForFillingOutReport(),
                 submitButton(),
               ],
@@ -107,17 +120,20 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: ElevatedButton(
               onPressed: () async {
                 String textOfReport = controllerOfTextForAnalysis.text;
+                Navigator.pop(context);
                 try {
-                  final CollectionReference reports = FirebaseFirestore.instance.collection("reports");
+                  final CollectionReference reports =
+                      FirebaseFirestore.instance.collection("reports");
                   String match = "";
                   String sentence = "";
                   String? label = "";
                   String? description = "";
                   String reason = textOfReport;
-                  List<SentencePart> mistakenSentence = Analyzer.reportData[PDFname]![indexOfSentenceInPDFFile];
-                  for (SentencePart sp in mistakenSentence){
+                  List<SentencePart> mistakenSentence =
+                      Analyzer.reportData[PDFname]![indexOfSentenceInPDFFile];
+                  for (SentencePart sp in mistakenSentence) {
                     sentence += sp.text;
-                    if(sp.description != null){
+                    if (sp.description != null) {
                       label = sp.label;
                       description = sp.description;
                       match = sp.text;
@@ -131,12 +147,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     "reason": reason
                   };
                   await reports.add(postdata);
-                }
-                catch(e){
+                } catch (e) {
                   print(e);
                 }
-
-                Navigator.pop(context);
+                submitted.value = true;
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color.fromRGBO(134, 73, 33, 1),
@@ -170,14 +184,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Expanded(
-              flex: 1,
-              child: SingleChildScrollView(
-                child: RichText(
-                  text: TextSpan(
-                    text: '',
-                    children: textSpans,
-                  ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: RichText(
+                text: TextSpan(
+                  text: '',
+                  children: textSpans,
                 ),
               ),
             ),
@@ -194,8 +206,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           cursorWidth: 2,
           cursorRadius: Radius.circular(3),
           decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.all(15),
+            contentPadding: EdgeInsets.all(15),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               borderSide: BorderSide(
@@ -203,7 +214,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 style: BorderStyle.none,
               ),
             ),
-            hintText: "Tell us more about problem",
+            hintText: "What is wrong with the sentence?",
             fillColor: Color(0xFFFBFDF7),
             filled: true,
           ),
@@ -222,13 +233,31 @@ class _FeedbackPageState extends State<FeedbackPage> {
         alignment: Alignment.topCenter,
         child: Container(
             color: Color(0xFFF2EEE1),
-            child: Text("Report form",
-                style: TextStyle(
-                    height: 1.45,
-                    fontFamily: 'Eczar',
-                    fontSize: 35,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF7A370B)))));
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, right: 5),
+                  child: Icon(
+                    Icons.warning_rounded,
+                    color: Color(0xDD864921),
+                    size: 35,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text("Report form    ",
+                      style: TextStyle(
+                          height: 1.45,
+                          fontFamily: 'Eczar',
+                          fontSize: 35,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF7A370B))),
+                ),
+                Spacer()
+              ],
+            )));
   }
 
   Widget closeButton() {
@@ -238,19 +267,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
         height: 32,
         child: Align(
           alignment: Alignment.topRight,
-          child: Expanded(
-            child: Material(
-                color: Colors.white.withOpacity(0.0),
-                child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.clear_rounded,
-                      size: 32,
-                      color: Color(0xFF7A370B),
-                    ))),
-          ),
+          child: Material(
+              color: Colors.white.withOpacity(0.0),
+              child: InkWell(
+                  onTap: () {
+                    closed.value = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.clear_rounded,
+                    size: 32,
+                    color: Color(0xFF7A370B),
+                  ))),
         ),
       ),
     );

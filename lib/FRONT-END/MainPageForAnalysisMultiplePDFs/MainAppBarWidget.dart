@@ -15,13 +15,16 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color.fromRGBO(242, 238, 225, 1),
       elevation: 0,
       centerTitle: true,
-      title: const Text(
-        'Fix my English',
-        style: TextStyle(
-            color: Color.fromRGBO(134, 73, 33, 1),
-            fontFamily: 'Eczar',
-            fontSize: 45,
-            ),
+      title: MouseRegion(
+        onHover: _printBom(),
+        child: const Text(
+          'Fix my English',
+          style: TextStyle(
+              color: Color.fromRGBO(134, 73, 33, 1),
+              fontFamily: 'Eczar',
+              fontSize: 50,
+              ),
+        ),
       ),
       actions: <Widget>[
         //FittedBox(child:
@@ -30,6 +33,9 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         AppBarActionHome(contextOfMainPage),
       ],
     );
+  }
+  _printBom(){
+
   }
 
   @override

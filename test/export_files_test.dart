@@ -16,12 +16,12 @@ void main() {
     test('Getting csv 1', () {
       String csv = Exporter.getCsv("file_1");
       expect(csv,
-          "Sentence,Mistake,Description\r\n\"Hello it's me, Mario\",it's,improper usage");
+          "match,sentence,label,description\r\nit's,\"Hello it's me, Mario\",improper,improper usage");
     });
     test('Getting csv 2', () {
       String csv = Exporter.getCsv("file_2");
       expect(csv,
-          "Sentence,Mistake,Description\r\nI eat 8 eggs.,8,improper usage of numbers");
+          "match,sentence,label,description\r\n8,I eat 8 eggs.,digit,improper usage of numbers");
     });
   });
 }
