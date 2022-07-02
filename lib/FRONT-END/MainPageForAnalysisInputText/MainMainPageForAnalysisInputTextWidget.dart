@@ -159,7 +159,7 @@ class _MainMainPageForAnalysisInputTextWidget
                           child: Text(
                             "${currentMistakeDescription}",
                             style: TextStyle(
-                                fontSize: 19, fontFamily: 'Eczar', height: 1.3),
+                                fontSize: 14, fontFamily: 'Eczar', height: 1.3),
                           ),
                         ),
                       )),
@@ -221,82 +221,87 @@ class _MainMainPageForAnalysisInputTextWidget
               child: FittedBox(
                 child: Row(children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 13.0, right: 10),
-                    child: Tooltip(
-                      message: "Open report form with this sentence",
-                      padding: EdgeInsets.all(6),
-                      showDuration: Duration(seconds: 0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF49454F),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                      ),
-                      textStyle: TextStyle(color: Colors.white),
-                      preferBelow: true,
-                      child: Material(
-                        color: Colors.white.withOpacity(0.0),
-                        child: InkWell(
-                            onTap: () async {
-                              await Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  opaque: false, // set to false
-                                  pageBuilder: (_, __, ___) => FeedbackPage(
-                                      convertTextToTextSpans(text),
-                                      index,
-                                      "textForAnalysis",
-                                      isReportSubmitted,
-                                      isReportFormClosed),
-                                ),
-                              );
-                              EasyLoading.show(status: "loading...");
-                              while (!isReportFormClosed.value &&
-                                  !isReportSubmitted.value) {
-                                await new Future.delayed(
-                                    new Duration(milliseconds: 500));
-                              }
-                              EasyLoading.dismiss();
-                              const snackBar = SnackBar(
-                                content: Text(
-                                    'Thanks for reporting! You answer saved!'),
-                              );
-                              if (!isReportFormClosed.value)
-                                scaffoldKey.currentState!
-                                    .showSnackBar(snackBar);
-                            },
-                            child: Icon(
-                              Icons.warning_rounded,
-                              color: Color(0xFFAA6D43),
-                              size: 32,
-                            )),
-                      ),
+                    padding: const EdgeInsets.only(top: 12.0, right: 10),
+                    child: Row(
+                      children: [
+                        Material(
+                          color: Colors.white.withOpacity(0.0),
+                          child: InkWell(
+                              onTap: () async {
+                                await Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    opaque: false, // set to false
+                                    pageBuilder: (_, __, ___) => FeedbackPage(
+                                        convertTextToTextSpans(text),
+                                        index,
+                                        "textForAnalysis",
+                                        isReportSubmitted,
+                                        isReportFormClosed),
+                                  ),
+                                );
+                                EasyLoading.show(status: "loading...");
+                                while (!isReportFormClosed.value &&
+                                    !isReportSubmitted.value) {
+                                  await new Future.delayed(
+                                      new Duration(milliseconds: 500));
+                                }
+                                EasyLoading.dismiss();
+                                const snackBar = SnackBar(
+                                  content: Text(
+                                      'Thanks for reporting! You answer saved!'),
+                                );
+                                if (!isReportFormClosed.value)
+                                  scaffoldKey.currentState!
+                                      .showSnackBar(snackBar);
+                              },
+                              child: Icon(
+                                Icons.warning_rounded,
+                                color: Color(0xFFAA6D43),
+                                size: 32,
+                              )),
+
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 3.0),
+                          child: Text("Report",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                fontFamily: 'Eczar',
+                                color: Color.fromRGBO(134, 73, 33, 1),
+                              )),
+                        )
+                      ],
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
-                    child: Tooltip(
-                      message: "Copy",
-                      padding: EdgeInsets.all(6),
-                      margin: EdgeInsets.all(10),
-                      showDuration: Duration(seconds: 0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF49454F),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                      ),
-                      textStyle: TextStyle(color: Colors.white),
-                      preferBelow: true,
-                      child: Material(
-                          color: Colors.white.withOpacity(0.0),
-                          child: InkWell(
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(
-                                    text: prepareForCopying(text)));
-                              },
-                              child: Image.asset(
-                                "copy.png",
-                                width: 30,
-                                height: 30,
-                              ))),
+                    child: Row(
+                      children: [
+                        Material(
+                            color: Colors.white.withOpacity(0.0),
+                            child: InkWell(
+                                onTap: () {
+                                  Clipboard.setData(ClipboardData(
+                                      text: prepareForCopying(text)));
+                                },
+                                child: Image.asset(
+                                  "copy.png",
+                                  width: 30,
+                                  height: 30,
+                                ))),
+                         Padding(
+                           padding: const EdgeInsets.only(left: 3.0),
+                           child: Text("Copy",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                height: 1.5,
+                                fontSize: 16,
+                                fontFamily: 'Eczar',
+                                color: Color.fromRGBO(134, 73, 33, 1),
+                              )),
+                         ),
+                      ],
                     ),
                   )
                 ]),
