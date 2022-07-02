@@ -11,6 +11,7 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       toolbarHeight: heightOfAppBarWidget,
       backgroundColor: const Color.fromRGBO(242, 238, 225, 1),
       elevation: 0,

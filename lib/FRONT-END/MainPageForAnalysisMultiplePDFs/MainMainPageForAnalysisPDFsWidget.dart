@@ -96,31 +96,31 @@ class _MainMainPageForAnalysisPDFsWidget
               child: Padding(
                 padding: EdgeInsets.only(top: 10, left: 55),
                 child: Container(
-                  child: Text("Mistaken Sentences",
+                  child: mistakenSentenceList != null ? Text("Mistaken Sentences",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         height: 1.5,
                         fontSize: 27,
                         fontFamily: 'Eczar',
                         color: Color.fromRGBO(134, 73, 33, 1),
-                      )),
+                      )) : SizedBox.shrink(),
                 ),
               ),
             ),
             MistakenSentenceList(),
-            Padding(
+            mistakenSentenceList != null ? Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Container(
                 height: 145,
                   color: Color(0xAAF2EEE1),
                   child: Row(
                     children: [
-                          MistakeDescriptionField(),
+                      MistakeDescriptionField(),
                       Spacer(),
                       ExportButton(),
                     ],
                   )),
-            )
+            ) : SizedBox.shrink()
           ],
         ));
   }
@@ -246,7 +246,7 @@ class _MainMainPageForAnalysisPDFsWidget
                                     pageBuilder: (_, __, ___) => FeedbackPage(
                                         convertTextToTextSpans(text),
                                         index,
-                                        "textForAnalysis",
+                                        Analyzer.reportData.keys.elementAt(indexOfSelectedPDF),
                                         isReportSubmitted,
                                         isReportFormClosed),
                                   ),
@@ -352,7 +352,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 0, right: 54),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 0, right: 53),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [
@@ -541,7 +541,7 @@ class _MainMainPageForAnalysisPDFsWidget
     return Align(
       alignment: Alignment.topCenter,
       child: Padding(
-        padding: const EdgeInsets.only(top: 25, bottom: 30),
+        padding: const EdgeInsets.only(top: 25, bottom: 33),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [

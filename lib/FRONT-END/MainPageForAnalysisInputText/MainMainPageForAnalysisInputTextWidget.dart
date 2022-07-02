@@ -12,6 +12,18 @@ import '../../BACK-END/AnalyzePDF/SentencePartClass.dart';
 import '../../BACK-END/AnalyzePDF/AnalyzePDF.dart';
 import 'TooltipSpan.dart';
 
+class MainPageForTextAnalysis extends StatelessWidget {
+  const MainPageForTextAnalysis({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: "Fix my English",
+        debugShowCheckedModeBanner: false,
+        home: MainMainPageForAnalysisInputTextWidget());
+  }
+}
+
 class MainMainPageForAnalysisInputTextWidget extends StatefulWidget {
   const MainMainPageForAnalysisInputTextWidget({Key? key}) : super(key: key);
 
@@ -28,6 +40,8 @@ class _MainMainPageForAnalysisInputTextWidget
   Boolean isReportSubmitted = new Boolean(false);
   Boolean isReportFormClosed = new Boolean(false);
   String currentMistakeDescription = "";
+  late double h;
+  late int maxLines;
 
   @override
   void dispose() {
@@ -40,7 +54,6 @@ class _MainMainPageForAnalysisInputTextWidget
     super.initState();
     mistakenSentenceList = Analyzer.reportData["textForAnalysis"];
     controllerOfTextForAnalysis.text = convertToText(mistakenSentenceList);
-    print(controllerOfTextForAnalysis.text);
   }
 
   String convertToText(List<List<SentencePart>>? mistakenSentenceList) {
@@ -55,33 +68,106 @@ class _MainMainPageForAnalysisInputTextWidget
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Fix my English",
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        key: scaffoldKey,
-        appBar: MainAppBarWidget(context),
-        body: Container(
-            child: Row(
-          children: [
-            Expanded(child: ReportPartWidget()),
-            TextInputPartWidget(),
-          ],
-        )),
-      ),
+    h = MediaQuery.of(context).size.height;
+    maxLines = h ~/50;
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: MainAppBarWidget(context),
+      body: Container(
+          child: Row(
+        children: [
+          ReportPartWidget(),
+          TextInputPartWidget(),
+        ],
+      )),
     );
   }
 
   Widget ReportPartWidget() {
-    return Column(
+    return Expanded(
+        child: Column(
       children: [
-        Container(
-          height: 35,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(top: 10, left: 55),
+            child: Container(
+              child: mistakenSentenceList != null
+                  ? Text("Mistaken Sentences",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        height: 1.5,
+                        fontSize: 27,
+                        fontFamily: 'Eczar',
+                        color: Color.fromRGBO(134, 73, 33, 1),
+                      ))
+                  : SizedBox.shrink(),
+            ),
+          ),
         ),
         MistakenSentenceList(),
-        ExportButton()
+        mistakenSentenceList != null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Container(
+                    height: 145,
+                    color: Color(0xAAF2EEE1),
+                    child: Row(
+                      children: [
+                        MistakeDescriptionField(),
+                        Spacer(),
+                        ExportButton(),
+                      ],
+                    )),
+              )
+            : SizedBox.shrink()
       ],
-    );
+    ));
+  }
+
+  Widget MistakeDescriptionField() {
+    return currentMistakeDescription != ""
+        ? Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 5, left: 55),
+            child: Container(
+              width: 600,
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Mistake description",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          height: 1.5,
+                          fontSize: 27,
+                          fontFamily: 'Eczar',
+                          color: Color.fromRGBO(134, 73, 33, 1),
+                        )),
+                  ),
+                  Container(
+                      height: 70,
+                      width: 600,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFFFFFF),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            "${currentMistakeDescription}",
+                            style: TextStyle(
+                                fontSize: 19, fontFamily: 'Eczar', height: 1.3),
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          )
+        : SizedBox.shrink();
   }
 
   Widget MistakenSentenceList() {
@@ -136,40 +222,53 @@ class _MainMainPageForAnalysisInputTextWidget
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0, right: 10),
-                    child: Material(
-                      color: Colors.white.withOpacity(0.0),
-                      child: InkWell(
-                          onTap: () async {
-                            await Navigator.of(context).push(
-                              PageRouteBuilder(
-                                opaque: false, // set to false
-                                pageBuilder: (_, __, ___) => FeedbackPage(
-                                    convertTextToTextSpans(text),
-                                    index,
-                                    "textForAnalysis",
-                                    isReportSubmitted,
-                                    isReportFormClosed),
-                              ),
-                            );
-                            EasyLoading.show(status: "loading...");
-                            while (!isReportFormClosed.value &&
-                                !isReportSubmitted.value) {
-                              await new Future.delayed(
-                                  new Duration(milliseconds: 500));
-                            }
-                            EasyLoading.dismiss();
-                            const snackBar = SnackBar(
-                              content: Text(
-                                  'Thanks for reporting! You answer saved!'),
-                            );
-                            if (!isReportFormClosed.value)
-                              scaffoldKey.currentState!.showSnackBar(snackBar);
-                          },
-                          child: Icon(
-                            Icons.warning_rounded,
-                            color: Color(0xFFAA6D43),
-                            size: 32,
-                          )),
+                    child: Tooltip(
+                      message: "Open report form with this sentence",
+                      padding: EdgeInsets.all(6),
+                      showDuration: Duration(seconds: 0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF49454F),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      textStyle: TextStyle(color: Colors.white),
+                      preferBelow: true,
+                      child: Material(
+                        color: Colors.white.withOpacity(0.0),
+                        child: InkWell(
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  opaque: false, // set to false
+                                  pageBuilder: (_, __, ___) => FeedbackPage(
+                                      convertTextToTextSpans(text),
+                                      index,
+                                      "textForAnalysis",
+                                      isReportSubmitted,
+                                      isReportFormClosed),
+                                ),
+                              );
+                              EasyLoading.show(status: "loading...");
+                              while (!isReportFormClosed.value &&
+                                  !isReportSubmitted.value) {
+                                await new Future.delayed(
+                                    new Duration(milliseconds: 500));
+                              }
+                              EasyLoading.dismiss();
+                              const snackBar = SnackBar(
+                                content: Text(
+                                    'Thanks for reporting! You answer saved!'),
+                              );
+                              if (!isReportFormClosed.value)
+                                scaffoldKey.currentState!
+                                    .showSnackBar(snackBar);
+                            },
+                            child: Icon(
+                              Icons.warning_rounded,
+                              color: Color(0xFFAA6D43),
+                              size: 32,
+                            )),
+                      ),
                     ),
                   ),
                   Padding(
@@ -209,9 +308,9 @@ class _MainMainPageForAnalysisInputTextWidget
 
   String prepareForCopying(List<SentencePart> text) {
     String toRet = '';
-    text.forEach((element) {
+    for (var element in text) {
       toRet += element.text;
-    });
+    }
     return toRet;
   }
 
@@ -223,20 +322,26 @@ class _MainMainPageForAnalysisInputTextWidget
               message: "",
               inlineSpan: TextSpan(
                   text: i.text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     height: 1.5,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontFamily: 'Eczar',
                   ))))
           : toRet.add(TooltipSpan(
-              message: i.description!,
+              message:
+                  "On tap, you can see the mistake description at the bottom of the screen",
               inlineSpan: TextSpan(
-
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () {
+                      setState(() {
+                        currentMistakeDescription = i.description!;
+                      });
+                    },
                   text: i.text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     backgroundColor: Color(0x80DD4A4A),
                     height: 1.5,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontFamily: 'Eczar',
                   ))));
     }
@@ -247,7 +352,7 @@ class _MainMainPageForAnalysisInputTextWidget
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, bottom: 18, right: 53),
+        padding: const EdgeInsets.only(top: 30.0, bottom: 0, right: 53),
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () {
@@ -283,7 +388,11 @@ class _MainMainPageForAnalysisInputTextWidget
     return Container(
         width: 470,
         color: const Color(0xFFE9F1E8),
-        child: Column(children: [TextInputField(), AnalyzeTextButton()]));
+        child: Column( children: [
+          TextInputField(),
+          Spacer(),
+          AnalyzeTextButton()
+        ]));
   }
 
   Widget TextInputField() {
@@ -300,10 +409,12 @@ class _MainMainPageForAnalysisInputTextWidget
             ],
             borderRadius: BorderRadius.all(Radius.circular(23)),
           ),
-          margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          margin: const EdgeInsets.only(top: 65, left: 20, right: 20),
           child: TextField(
               key: Key("textField"),
               controller: controllerOfTextForAnalysis,
+              minLines: maxLines,
+              maxLines: maxLines,
               cursorColor: Color.fromRGBO(134, 73, 33, 1),
               cursorWidth: 2,
               cursorRadius: Radius.circular(3),
@@ -325,16 +436,15 @@ class _MainMainPageForAnalysisInputTextWidget
                   height: 1.5,
                   fontFamily: 'Eczar',
                   fontSize: 20,
-                  color: Colors.black),
-              maxLines: 16,
-              minLines: 16)),
+                  color: Colors.black,),
+              )),
     );
   }
 
   Widget AnalyzeTextButton() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.only(top: 25),
+        padding: const EdgeInsets.only(top: 20, bottom: 30),
         child: FittedBox(
           child: ElevatedButton(
               onPressed: () async {

@@ -59,7 +59,7 @@ class _IntroWidgetState extends State<IntroWidget> {
             alignment: Alignment.bottomLeft,
             child: SvgPicture.asset(
               "leftsmallwave.svg",
-              height: 180,
+              height: 175,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -67,7 +67,7 @@ class _IntroWidgetState extends State<IntroWidget> {
             alignment: Alignment.bottomLeft,
             child: SvgPicture.asset(
               "leftbigwave.svg",
-              height: 650,
+              height: 600,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -166,7 +166,7 @@ class _IntroWidgetState extends State<IntroWidget> {
                       EasyLoading.dismiss();
                       Navigator.push(navigatorKey.currentContext!,
                           MaterialPageRoute(builder: (context) {
-                        return MainMainPageForAnalysisInputTextWidget();
+                        return const MainMainPageForAnalysisInputTextWidget();
                       }));
                     }
                   }
