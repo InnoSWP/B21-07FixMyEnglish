@@ -26,6 +26,9 @@ void main() {
       expect(find.text("file_1.pdf"), findsOneWidget);
       expect(Analyzer.reportData["file_1.pdf"]?[0].length, 3);
       await tester.tap(deleteButton);
+      final acceptButton = find.byKey(ValueKey("accept_button"));
+      await tester.pump();
+      await tester.tap(acceptButton);
       await tester.pump();
       expect(find.text("file_1.pdf"), findsNothing);
       expect(Analyzer.reportData["file_1.pdf"], null);
@@ -39,6 +42,9 @@ void main() {
       expect(find.text("file_2.pdf"), findsOneWidget);
       expect(Analyzer.reportData["file_2.pdf"]?[0].length, 3);
       await tester.tap(deleteButton);
+      final acceptButton = find.byKey(ValueKey("accept_button"));
+      await tester.pump();
+      await tester.tap(acceptButton);
       await tester.pump();
       expect(find.text("file_2.pdf"), findsNothing);
       expect(Analyzer.reportData["file_2.pdf"], null);

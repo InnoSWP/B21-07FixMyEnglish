@@ -499,6 +499,7 @@ class _MainMainPageForAnalysisPDFsWidget
                   Padding(
                     padding: EdgeInsets.only(right: 60),
                     child: TextButton(
+                        key: Key("accept_button"),
                         onPressed: () {
                           Navigator.of(context).pop();
                           toRet = true;
