@@ -159,8 +159,8 @@ class _IntroWidgetState extends State<IntroWidget> {
                           .loadString('../../../assets/json1');
                       files.add(jsondata);
                       mistakes =
-                          await Analyzer.getMistakes_mocked(files, false);
-
+                      await Analyzer.getMistakes_mocked(files, false);
+                    }
                       Analyzer.reportData.addAll(mistakes);
                       controllerOfTextForAnalysis.text = "";
                       EasyLoading.dismiss();
@@ -168,7 +168,6 @@ class _IntroWidgetState extends State<IntroWidget> {
                           MaterialPageRoute(builder: (context) {
                         return const MainMainPageForAnalysisInputTextWidget();
                       }));
-                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
