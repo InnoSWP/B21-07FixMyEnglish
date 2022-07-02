@@ -1,8 +1,9 @@
+# Fix my English by group 7
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![dart](https://img.shields.io/github/languages/top/InnoSWP/B21-07FixMyEnglish)
 ![repo size](https://img.shields.io/github/repo-size/InnoSWP/B21-07FixMyEnglish)
 ![files](https://img.shields.io/github/directory-file-count/InnoSWP/B21-07FixMyEnglish)
-# Fix my English by group 7
 
 ## Our motivation and project description
 We built this project to help Innopolis University English department in checking students' works for academic style mistakes.We propose to use the special API integrated into our app that will look for academic style mistakes in students' works. Our motivation was to help to speed up the grading process for the English Department.
