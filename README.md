@@ -1,4 +1,4 @@
-# Fix my English by group 7
+# Fix my English
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![dart](https://img.shields.io/github/languages/top/InnoSWP/B21-07FixMyEnglish)
 ![repo size](https://img.shields.io/github/repo-size/InnoSWP/B21-07FixMyEnglish)
@@ -6,7 +6,7 @@
 ## Our motivation and project description
 We built this project to help Innopolis University English department in checking students' works for academic style mistakes.We propose to use the special API integrated into our app that will look for academic style mistakes in students' works. Our motivation was to help to speed up the grading process for the English Department.
 ## How to use our app
-Follow this [link](https://bs-07fixmyenglish.web.app/#/) to launch our app. Click this [link](https://drive.google.com/file/d/1pOjzieTfRUD0AeT9zNDdKBbVacHnBQYu/view?resourcekey) to get redirected to a video demo.
+Follow this [link](https://bs-07fixmyenglish.web.app/#/) to launch our app. Click this [link](https://drive.google.com/file/d/16hboql5m05ISMvxJbJAxUqsLiVsZr9M0/view?resourcekey) to get redirected to a video demo.
 1. On the home page the user can either upload PDF files or write the text directly in the special window.
 ![alt text](https://s3.image.hosting/2022/07/02/WUPip.jpg)
 After clicking “Upload files” button folder explorer will be opened and the user will be able to choose the files they want to upload. After selecting files they will be directed to the second screen. Alternatively the user can type the text themselves. After clicking “Analyze text” button they will be directed to the third screen.
